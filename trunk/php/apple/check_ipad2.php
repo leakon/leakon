@@ -9,10 +9,14 @@
 	$strUrl		= 'http://store.apple.com/cn/browse/home/shop_ipad/family/ipad/select';
 	
 	$strCont	= file_get_contents($strUrl);
+	
+	// 确保抓取成功
+	$boolHtmlOK	= strlen($strCont) > 0 
+			&& false !== strpos($strCont, '<h2>选择您的 iPad</h2>');
 
 	$intQty		= preg_match_all('#暂无供应#', $strCont, $matches);
 	
-	if ($intQty > 0 && $intQty != 6) {
+	if ($boolHtmlOK && $intQty != 6) {
 		
 		// iPad 2 is available
 		
@@ -26,7 +30,7 @@
 		
 		$strStopCont	= sprintf("iPad 2 is available [%s]", date('Y-m-d H:i:s'));
 		
-		$result		= mail("your.mail@gmail.com", $strStopCont, $strStopCont);
+		$result		= mail("mail@gmail.com", $strStopCont, $strStopCont);
 		
 		file_put_contents($strStopFile, $strCont);
 		
