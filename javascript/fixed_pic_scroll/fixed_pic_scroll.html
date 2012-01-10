@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>Fixed Pic Scroll</title>
+<style>
+
+
+#id_button	{display:none;}
+#id_button img	{border:1px solid black;}
+
+</style>
+</head>
+
+<body>
+
+<div id="id_button">
+<img src="button.gif" />
+</div>
+
+<?php
+
+	for ($i = 1; $i < 20; $i++) {
+
+		echo	sprintf('<h3>Line %d ......</h3>' . "<p>&nbsp;<br />&nbsp;</p>\n\n", $i);
+
+	}
+
+?>
+
+<script>
+
+function MakeDivFixed(strId, objProp) {
+
+	var browserAgent	= navigator.userAgent.toLowerCase();
+	// (!window.XMLHttpRequest) if TRUE, IE version <= 6.0
+	var isNeedHack		= /msie/.test(browserAgent) && !/opera/.test(browserAgent) && !window.XMLHttpRequest;
+	var objTarget		= false;
+	var intScrollTop	= 0;
+	var objIE6Hack		= {};
+
+	var resetPosition	= function() {
+
+		intScrollTop	= document.documentElement.scrollTop;
+
+		setTimeout(function() {
+
+			if (false !== objProp['top']) {
+				if (isNeedHack) {
+					objTarget.style.top	= (parseInt(intScrollTop) + parseInt(objProp['top'])) + 'px';
+				} else {
+					objTarget.style.top	= objProp['top'] + 'px';
+				}
+			}
+			if (false !== objProp['bottom']) {
+				// See http://bbs.leakon.com/thread-202-1-1.html
+				if (isNeedHack) {
+					objIE6Hack.innerHTML	= '';
+				}
+				objTarget.style.bottom	= objProp['bottom'] + 'px';
+			}
+			if (false !== objProp['left']) {
+				objTarget.style.left	= objProp['left'] + 'px';
+			}
+			if (false !== objProp['right']) {
+				objTarget.style.right	= objProp['right'] + 'px';
+			}
+		}, 100);
+
+	}
+
+	this.init		= function() {
+
+		objTarget		= document.getElementById(strId);
+
+		if (!objTarget) {
+			return;
+		}
+
+		objProp['top']		= 'undefined' == typeof objProp['top'] ? false : parseInt(objProp['top']);
+		objProp['left']		= 'undefined' == typeof objProp['left'] ? false : parseInt(objProp['left']);
+		objProp['right']	= 'undefined' == typeof objProp['right'] ? false : parseInt(objProp['right']);
+		objProp['bottom']	= 'undefined' == typeof objProp['bottom'] ? false : parseInt(objProp['bottom']);
+
+		if (isNeedHack) {
+			objTarget.style.position	= 'absolute';
+			window.attachEvent("onscroll", resetPosition);
+			window.attachEvent("onresize", resetPosition);
+			// See http://bbs.leakon.com/thread-202-1-1.html
+			objIE6Hack			= document.createElement('div');
+			objIE6Hack.style.display	= 'none';
+			document.body.insertBefore(objIE6Hack, objTarget);
+		} else {
+			objTarget.style.position	= 'fixed';
+		}
+
+		resetPosition();
+
+		setTimeout(function() {
+			objTarget.style.display	= 'block';
+		}, 200);
+
+	}
+
+}
+
+var doWork	= new MakeDivFixed('id_button', {'right':100, 'bottom':50});
+doWork.init();
+
+</script>
+
+</body>
+</html>

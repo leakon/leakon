@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<meta http-equiv="content-language" content="gbk" />
+<title>Event Phase</title>
+
+<style type="text/css">
+
+body,
+div,
+p,
+img		{margin:40px; padding:20px; border:1px solid #CCC;}
+
+</style>
+
+</head>
+
+<body id="theBody">
+	<h5 id="theOutput">NULL</h5>
+
+	inBody
+
+	<div id="theDiv">
+		inDiv
+
+
+		<p id="thePara">
+			inPara
+			<br />
+			<img id="theImg" src="http://www.google.com/intl/en_ALL/images/logo.gif" alt="Google" />
+		</p>
+	</div>
+
+
+<script type="text/javascript">
+function G(sid) {
+	return	document.getElementById(sid);
+}
+function O(str) {
+//	G('theOutput').innerHTML	= str;
+	G('theOutput').innerHTML	+= ' | ' + str;
+//	alert(str);
+}
+function S(sid, evtName, callBack, phase) {
+	G(sid).addEventListener(evtName, callBack, phase);
+}
+
+function Bind() {
+
+	var _event;
+
+	var _stop	= function() {
+		// only stop the current event chain
+		// when another event fires, it will dispatch from first level to the last level if the event don't ever called stopPropagation().
+		_event.stopPropagation();
+	}
+
+	var _call	= function(tag) {
+		O(tag);
+	}
+
+	this.callBody	= function(in_evt) {
+		_call('body');
+
+		_event	= in_evt || window.event;
+	//	_stop();
+	}
+	this.callDiv	= function(in_evt) {
+		_call('div');
+
+		_event	= in_evt || window.event;
+	//	_stop();
+	}
+	this.callPara	= function(in_evt) {
+		_call('para');
+
+		_event	= in_evt || window.event;
+	//	_stop();
+	}
+	this.callImg	= function(in_evt) {
+		_call('img');
+
+		_event	= in_evt || window.event;
+		_stop();
+	}
+
+}
+
+var node	= new Bind();
+
+	var phase;
+	phase	= true;		// from parent to child
+//	phase	= false;	// from child to parent
+
+	if (1) {
+
+		document.addEventListener('click', node.callBody, phase);
+		S('theDiv', 'click', node.callDiv, phase);
+		S('thePara', 'click', node.callPara, phase);
+		S('theImg', 'click', node.callImg, phase);
+
+	} else {
+
+		document.addEventListener('click', node.callBody);
+		S('theDiv', 'click', node.callDiv);
+		S('thePara', 'click', node.callPara);
+		S('theImg', 'click', node.callImg);
+
+	}
+
+	S('thePara', 'mouseover', function() {O('over');}, phase);
+	S('thePara', 'mouseout', function() {O('out');}, phase);
+
+
+</script>
+
+</body>
+</html>

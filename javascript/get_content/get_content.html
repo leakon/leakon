@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<meta http-equiv="content-language" content="gbk" />
+<title>GetContent</title>
+
+<style type="text/css">
+*	{font-family:Courier New;font-size:13px;}
+</style>
+<script type="text/javascript" src="base.js"></script>
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+function StartMenu() {
+	LoadJavascript('http://www.foo.com/code/leakon/javascript/get_content/menu.js?ver=' + Rand(), 'body');
+}
+
+function StartFoo() {
+
+	LoadJavascript('http://www.foo.com/code/leakon/javascript/get_content/foo.js?ver=' + Rand(), 'body');
+/**
+	Think about loading time.
+	setTimeout to check whether the ScriptFile has been loaded successfully.
+*/
+}
+
+//alert('Load HTML');
+
+</script>
+
+<form id="FirstForm" action="">
+
+<a href="javascript:__MYS_MN__=document.createElement('script');__MYS_MN__.type='text/javascript';__MYS_MN__.src='http://www.foo.com/code/leakon/javascript/get_content/menu.js?ver='+Math.random();document.getElementsByTagName('head').item(0).appendChild(__MYS_MN__);window.focus()" onclick="alert('Drag to your BookMark bar!');return false;" style="font-weight:bold; color:orange">SBT</a>
+
+<input type="button" value="Load Menu" onclick="StartMenu()" />
+<input type="button" value="Load Foo Script" onclick="StartFoo()" />
+<input type="button" value="Load Bar Script" onclick="LoadJavascript('http://www.bar.com/code/leakon/javascript/get_content/bar.js')" />
+
+</form>
+
+
+
+
+
+</body>
+</html>

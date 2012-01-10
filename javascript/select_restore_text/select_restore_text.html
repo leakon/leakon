@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Storing and restoring text selection in Mozilla and in MSIE/Win</title>
+<script type="text/javascript">
+var selection1, selection2;
+
+
+var sel_3	= '故事 服食花';
+
+//var objRange	= document.createRange(sel_3);
+//debugObj(objRange);
+
+
+function storeCurrentSelection() {
+
+	if (window.getSelection) {
+		// DOM2 Mozilla
+	//	alert('DOM2');
+		var selection = window.getSelection();
+		if (selection.rangeCount > 0) {
+			var selectedRange = selection.getRangeAt(0);
+			return selectedRange.cloneRange();
+		} else {
+			return null;
+		}
+	} else if (document.selection) {
+		// IE
+	//	alert('IE');
+		var selection = document.selection;
+		if (selection.type.toLowerCase() == 'text') {
+		//	return selection.createRange().getBookmark();
+			return selection.createRange();
+		} else {
+			return null;
+		}
+	} else {
+		return null;
+	}
+}
+
+function restoreSelection(storedSelection) {
+	if (storedSelection) {
+		if (window.getSelection) {
+			var selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(storedSelection);
+		} else if (document.selection && document.body.createTextRange) {
+			var range = document.body.createTextRange();
+			range.moveToBookmark(storedSelection);
+			range.select();
+		}
+	}
+}
+
+
+
+function CustomRestore (storedSelection) {
+	if (storedSelection) {
+		if (window.getSelection) {
+			var selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(storedSelection);
+		} else if (document.selection && document.body.createTextRange) {
+			var range = document.body.createTextRange();
+			range.moveToBookmark(storedSelection);
+			range.select();
+		}
+	}
+}
+
+function DumpObj(obj) {
+
+//	alert(typeof obj);
+//	alert(obj);
+	debugObj('selection', obj);
+
+}
+
+function ShowObj(obj) {
+	alert(obj);
+}
+
+
+function debugObj(label, obj) {
+//	return;
+	var str = "";
+	for (var p in obj) {
+		str += (p + ":" + obj[p] + "\n\n");
+	}
+	alert(label + "*******\n" + str);
+}
+
+function debugObj2(label, obj) {
+//	return;
+	var str = "";
+	for (var p in obj) {
+		str += (p + ":" + obj[p] + "<br />\n<br />\n");
+	}
+	document.write(label + "*******<br />\n" + str);
+}
+
+function Colors(obj) {
+//	obj.style.color		= 'red';
+}
+
+</script>
+</head>
+<body>
+<div>
+	<ul>
+		<li>18小时前 <span class="gray_text">更新近况</span> <a href="http://www.baidu.com/">服食花椒水能驱除寄生虫</a>（246）</li>
+
+		<li>3-7 <span class="gray_text">发表故事</span> <a href="http://www.google.com/">服食花椒水能驱除寄生虫</a>（246）</li>
+
+		<li class="side_middle_pic">
+			3-7 <span class="gray_text">发表故事</span> <a href="http://www.leakon.com/">服食花椒水能驱除寄生虫</a>（246）
+		</li>
+
+		<li><a href="http://www.abc.com/1">王栋</a> <span class="gray_text">新的一天开启新的希望</span> <span class="red_text">（悄悄话）</span></li>
+		<li><a href="http://www.abc.com/2">王栋</a> <span class="gray_text">新的一天开启新的希望</span> <span class="red_text">（悄悄话）</span></li>
+		<li><a href="http://www.abc.com/3">王栋</a> <span class="gray_text">新的一天开启新的希望</span> <span class="red_text">（悄悄话）</span></li>
+		<li><a href="http://www.abc.com/4">王栋</a> <span class="gray_text">新的一天开启新的希望</span> <span class="red_text">（悄悄话）</span></li>
+
+	</ul>
+
+</div>
+
+
+
+<h1>Storing and restoring text selection in Mozilla and in MSIE/Win</h1>
+<p>
+<input type="button" value="Store selection [1]" onclick="window.selection1=storeCurrentSelection();" />
+</p>
+
+<p>
+<input type="button" value="Store selection [2]" onclick="window.selection2=storeCurrentSelection();" />
+</p>
+
+<p>
+<input type="button" value="Restore selection [1]" onclick="restoreSelection(selection1);" />
+</p>
+<p>
+<input type="button" value="Restore selection [2]" onclick="restoreSelection(selection2);" />
+</p>
+
+
+<hr />
+
+
+<p>
+<input type="button" value="Dump Object [1]" onclick="DumpObj(selection1);" />
+<input type="button" value="Dump Object [2]" onclick="DumpObj(selection2);" />
+</p>
+
+<p>
+<input type="button" value="Show Object [1]" onclick="ShowObj(selection1);" />
+<input type="button" value="Show Object [2]" onclick="ShowObj(selection2);" />
+<input type="button" value="Colors [1]" onclick="Colors(selection1);" />
+</p>
+
+
+<hr />
+
+<p>
+<input type="button" value="Restore selection [3]" onclick="CustomRestore(sel_3);" />
+</p>
+
+
+<hr />
+
+<p>
+<input type="button" value="IE Create TextRange" onclick="IECreateTextRange()" />
+</p>
+
+
+<script type="text/javascript">
+
+function IECreateTextRange() {
+
+	// IE 下的 TextRange 对象属性测试
+
+	var rg		= document.selection.createRange();
+
+	// 创建一个 TextRange 对象的副本，对副本的操作不会影响原对象
+	var myRange	= rg.duplicate();
+
+//	rg.moveStart("character", 2);
+//	rg.moveEnd("character", -2);
+
+	// 移动副本的开始、结束端点
+	myRange.moveStart("character", 1);
+	myRange.moveEnd("character", -1);
+
+	var strText	= myRange.text;
+
+//	alert(strText);
+
+//	var strTest	= 'abcdabcd1234567812345678abcdabcd';
+//	alert(strTest.indexOf('ab', 1));
+
+
+	return;
+
+
+	// 重新选择原 TextRange 对象的文本
+	rg.select();
+
+	//获得选择文本的html代码
+	var strHTML	= rg.htmlText;
+
+
+	// 测试父节点
+	var objParentNode	= rg.parentElement();
+	var strParentHtml	= objParentNode.innerHTML;
+
+//	objParentNode.ann	= true;
+
+
+/*
+	var arrList		= document.getElementsByTagName('li');
+
+	for (var i = 0; i < arrList.length; i++) {
+
+		if (objParentNode == arrList[i]) {
+
+			alert(arrList[i].innerHTML);
+
+		}
+
+	}
+*/
+
+	alert(strParentHtml);
+
+	return;
+
+	rg.moveStart("character",1);
+	rg.moveEnd("character",-1);
+	rg.select();//显式选择文本区域，不调用此函数也可以获得选择的内容
+	var text=rg.text;//获得选择的文本
+	var htmlText=rg.htmlText;//获得选择文本的html代码
+
+
+
+	alert(text);
+}
+
+</script>
+
+<hr />
+
+
+<p>
+	<div id="id_ie_object_div_1">
+
+		<h3>IE Object Div</h3>
+
+		<div id="id_obj_create_1">不调用此函数也可以获得选择的内容</div>
+		<div id="id_obj_create_2">ABCDABCDABCD</div>
+
+	</div>
+</p>
+
+<p>
+<input type="button" value="IE Object Create TextRange" onclick="IEObjectCreateTextRange()" />
+</p>
+<p>
+<input type="button" value="IE Object Join TextRange" onclick="IEObjectJoinTextRange()" />
+</p>
+<p>
+<input type="button" value="IE Compare TextRange" onclick="IECompareTextRange()" />
+</p>
+
+
+<script type="text/javascript">
+
+function IEObjectCreateTextRange() {
+
+	var objDiv	= document.getElementById('id_obj_create_1');
+
+	var objRange	= document.body.createTextRange();
+
+	objRange.moveToElementText(objDiv);
+
+
+	// 移动 TextRange 的开始、结束端点
+	objRange.moveStart("character", 7);
+	objRange.moveEnd("character", -3);
+
+
+
+//	objRange.select();
+
+	return;
+
+}
+
+function IEObjectJoinTextRange() {
+
+	var rg		= document.selection.createRange();
+
+
+
+	var objDiv	= document.getElementById('id_obj_create_1');
+
+	var objRange	= document.body.createTextRange();
+
+	objRange.moveToElementText(objDiv);
+
+	// 移动 TextRange 的开始、结束端点
+	objRange.moveStart("character", 3);
+	objRange.moveEnd("character", -11);
+
+	var objRange_2	= document.body.createTextRange();
+
+	objRange_2.moveToElementText(objDiv);
+
+	// 移动 TextRange 的开始、结束端点
+	objRange_2.moveStart("character", 6);
+	objRange_2.moveEnd("character", -8);
+//	objRange.select();
+
+	var objRange_Join	= document.body.createTextRange();
+
+	objRange_Join.setEndPoint('StartToStart', objRange);
+	objRange_Join.setEndPoint('EndToEnd', objRange_2);
+
+	objRange_Join.select();
+
+	alert(rg.isEqual(objRange_Join));
+
+	return;
+
+}
+
+function IECompareTextRange() {
+
+	var rg		= document.selection.createRange();
+
+
+
+	var objDiv	= document.getElementById('id_obj_create_2');
+
+	var objRange	= document.body.createTextRange();
+
+	objRange.moveToElementText(objDiv);
+
+	// 移动 TextRange 的开始、结束端点
+	objRange.moveStart("character", 0);
+	objRange.moveEnd("character", -5);
+
+	objRange.select();
+
+	alert(rg.isEqual(objRange));
+
+	return;
+
+}
+
+
+</script>
+
+</body>
+</html>

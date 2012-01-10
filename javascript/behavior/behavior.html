@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<link rel="stylesheet" href="javascript.css"/>
+<style type="text/css">
+.box {
+    background-color: #f8f8f8;
+    border: solid black 1px;
+    margin: 10px;
+    padding: 10px;
+}
+</style>
+
+<script type="text/javascript" src="selector.js"></script>
+<script type="text/javascript" src="behavior.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+
+// Notice how this is quite declarative: no variable
+// assignment required of the user.
+
+var rules = {
+    '.clickable' : {
+        onclick : function() { alert('clicked!'); }
+    },
+
+    '.hoverable' : {
+        onmouseover : function() { this.style.color = 'red'; },
+        onmouseout : function() { this.style.color = 'black'; }
+    }
+};
+
+//	Behavior.register(rules);
+// ]]>
+</script>
+</head>
+
+<body>
+<div class="pageBody">
+
+<h2>Example</h2>
+
+<p>
+This page contains a script registering two style rules:
+</p>
+
+<pre class="snippet">var rules = {
+    '.clickable' : {
+        onclick : function() { alert('clicked!'); }
+    },
+
+    '.hoverable' : {
+        onmouseover : function() { this.style.color = 'red'; },
+        onmouseout : function() { this.style.color = 'black'; }
+    }
+};</pre>
+
+<p>
+The first rule renders the following <code>div</code> clickable, meaning it
+responds to the <code>onclick</code> event with an alert box:
+</p>
+
+<div class="box clickable" xxonclick="alert('Inline click')" id="id_one_clickable">
+I am clickable.
+</div>
+
+<p>
+The second rule renders the following <code>div</code> hoverable, meaning it
+response to the mouse hovering over it by turning its text red. Notice that this
+behavior is <i>combined</i> with the existing behavior: the <code>div</code>
+originally has an <code>onmouseover</code> event that turns its text bold, which
+is not overridden.
+</p>
+
+<div class="box hoverable"
+     onmouseover="this.style.fontWeight='bold'"
+     onmouseout="this.style.fontWeight='normal'">
+I am hoverable.
+</div>
+
+</div>
+
+
+<script type="text/javascript">
+// <![CDATA[
+
+var arrClickable	= document.getElementById('id_one_clickable');
+
+arrClickable.onclick	= function() {
+	alert('dom bind click');
+}
+
+var rules2 = {
+    '.clickable' : {
+        onclick : function() { alert('click second!'); }
+    },
+
+    '.hoverable' : {
+        onmouseover : function() { this.style.fontSize = '22px'; },
+        onmouseout : function() { this.style.fontSize = '16px'; }
+    }
+};
+Behavior.register(rules2);
+// ]]>
+</script>
+
+</body>
+</html>

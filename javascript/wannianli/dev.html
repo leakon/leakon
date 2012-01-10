@@ -1,0 +1,164 @@
+<html>
+<head>
+<title>实用农历:Javascript 版本</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head><body>
+<table width="850" align="center" border="0" cellpadding="0" cellspacing="0"><tr><td class="q">
+
+</td></tr>
+<tr><td>
+
+<script type="text/javascript" src="define.js"></script>
+<script type="text/javascript" src="func.js"></script>
+
+<STYLE>
+.todayColor { background-color: #F3CC90; border: 2px solid blue; }
+</STYLE>
+</HEAD>
+<BODY style="z-index:0; position: relative;" onload=initialize()  onmousemove="mEvn(event)">
+<SCRIPT language=Javascript><!--
+var agent = navigator.userAgent;
+var navVer = 0;
+var navName = '';
+
+if(agent.indexOf("MSIE") != -1) {
+	navVer = agent.replace(/^.+MSIE ([0-9\.]+).*$/i, "$1");
+	navName = 'IE';
+}
+if(agent.indexOf("Firefox") != -1) {
+	navVer = agent.replace(/^.+Firefox\/([0-9\.]+).*$/i, "$1");
+	navName = 'Firefox';
+}
+if(agent.indexOf("Gecko") != -1) {
+	navVer = agent.replace(/^.*Mozilla\/([0-9\.]+).*$/i, "$1");
+	navName = 'Mozilla';
+}
+if(navVer == 0 || (navName=='IE'&&navVer<4) ) {
+ document.write("<h1>你的浏览器无法执行此程式。</h1>此程式需在 IE 4.0 或 Firefox 1.0 以後的版本才能执行!!")
+ document.close;
+}
+//--></SCRIPT>
+<DIV id="detail"
+style="Z-INDEX: 3; FILTER: shadow(color=#333333,direction=135); WIDTH: 140px; POSITION: Absolute; HEIGHT: 120px"></DIV>
+<TABLE border=0>
+<TR>
+
+    <!------------------------------ 万年历 ----------------------------------->
+  <FORM name="CLD" onsubmit="return false;">
+  <TD align="middle">
+
+
+
+
+    <DIV style="Z-INDEX: -1; POSITION: absolute; TOP: 140px">
+    <FONT id="YMBG" style="FONT-SIZE: 100pt; COLOR: #e0e0e0; FONT-FAMILY: 'Arial Black'">&nbsp;0000<BR>&nbsp;JUN</FONT>
+    </DIV>
+
+
+
+    <TABLE border="0" width="504">
+      <TBODY>
+      <TR>
+        <TD bgColor="#000080" colSpan="7" align="center"><FONT style="FONT-SIZE: 9pt"
+          color=#ffffff size=2>西历 <SELECT style="FONT-SIZE: 9pt" onchange=changeCld() name=SY>
+
+
+
+            <SCRIPT language=Javascript><!--
+          for(i=1900;i<2101;i++) document.write('<option>'+i)
+          //--></SCRIPT>
+
+
+
+
+          </SELECT> 年 <SELECT style="FONT-SIZE: 9pt" onchange=changeCld()   name=SM>
+
+
+
+            <SCRIPT language=JavaScript><!--
+          for(i=1;i<13;i++) document.write('<option>'+i)
+          //--></SCRIPT>
+          </SELECT>
+
+
+
+          月</FONT> <FONT id="GZ" face="宋体" color="#ffffff"
+          size=4></FONT><BR></TD></TR>
+      <TR align="middle" bgColor="#e0e0e0">
+        <TD width="72">日</TD>
+        <TD width="72">一</TD>
+        <TD width="72">二</TD>
+        <TD width="72">三</TD>
+        <TD width="72">四</TD>
+        <TD width="72">五</TD>
+        <TD widTh="72">六</TD></TR>
+
+
+
+
+      <SCRIPT language=JavaScript><!--
+          var gNum, color1, color2;
+
+          // 星期六颜色
+          switch (conWeekend) {
+          case 1:
+             color1 = 'black';
+             color2 = color1;
+             break;
+          case 2:
+             color1 = 'green';
+             color2 = color1;
+             break;
+          case 3:
+             color1 = 'red';
+             color2 = color1;
+             break;
+          default :
+             color1 = 'green';
+             color2 = 'red';
+          }
+
+          for(i=0;i<6;i++) {
+
+             document.write('<tr align=center>')
+
+             for(j=0;j<7;j++) {
+                gNum = i*7+j
+                document.write('<td id="GD' + gNum +'" onMouseOver="mOvr(' + gNum +')" onMouseOut="mOut()"><font id="SD'
+                + gNum +'" size=5 face="Arial Black"')
+
+
+
+                if(j == 0) document.write(' color=red')
+                if(j == 6) {
+                   if(i%2==1) document.write(' color='+color2)
+                      else document.write(' color='+color1)
+                }
+                document.write(' TITLE=""> </font><br><font id="LD' + gNum + '" size=2 style="font-size:9pt"> </font></td>')
+             }
+
+
+
+             document.write('</tr>')
+          }
+          //--></SCRIPT>
+
+
+
+
+
+
+</TABLE></TD>
+  <TD vAlign="top" align="middle" width="40"><BR><BR><BR>年<BR>
+<BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('YD')">▲</BUTTON><BR>
+<BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('YU')">▼</BUTTON>
+<P>月<BR>
+<BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('MD')">▲</BUTTON><BR>
+<BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('MU')">▼</BUTTON><P>
+<BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('')">今<BR>日</BUTTON><P>
+</TD></FORM></TR></TBODY></TABLE>
+
+</td></tr>
+<tr align="center"><td class="s">
+
+</td></tr></table></body></html>

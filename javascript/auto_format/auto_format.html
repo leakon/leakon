@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Auto Format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+
+<style type="text/css">
+body	{margin:8px; padding:0;}
+*	{font-family:Verdana; font-size:12px;}
+</style>
+
+<script type="text/javascript">
+
+function DoParagraph(strInput) {
+
+	var strOutput	= strInput;
+
+	strOutput	= strOutput.replace(/\r\n/g, "\n");		//	换行
+
+	strOutput	= strOutput.replace(/\n+/g, "\r\n");		//	连续换行
+	strOutput	= strOutput.replace(/\n[　]*/g, "\n");		//	首行全角空格
+	strOutput	= strOutput.replace(/\n[ ]*/g, "\n");		//	首行半角空格
+
+	strOutput	= strOutput.replace(/\n/g, "\n\n　　");		//	首行全角空格
+
+	strOutput	= strOutput.replace(/^[ 　]*/, "　　");		//	头部全角空格
+
+	return		strOutput;
+}
+
+function Replace() {
+
+	var objDesk	= document.getElementById('desktop');
+	var objFrom	= document.getElementById('from');
+	var objTo	= document.getElementById('to');
+	var objRegex	= document.getElementById('is_regex');
+
+	if (objDesk) {
+		if (objRegex.checked) {
+			objDesk.value	= objDesk.value.replace(eval('/' + objFrom.value + '/g'), objTo.value);
+		} else {
+			objDesk.value	= objDesk.value.replace(objFrom.value, objTo.value);
+		}
+	}
+}
+
+function Format() {
+	var objDesk	= document.getElementById('desktop');
+
+	if (objDesk) {
+		objDesk.value	= DoParagraph(objDesk.value);
+	}
+}
+
+function Max() {
+	var objDesk	= document.getElementById('desktop');
+	if (objDesk) {
+
+		var ch = document.documentElement.clientHeight, sh = document.documentElement.scrollHeight;
+		objDesk.style.height = ((sh > ch ? sh : ch) - 80) + 'px';
+		objDesk.style.width = (document.body.clientWidth - 20) + 'px';
+
+	}
+}
+
+window.onload = function () {
+	setTimeout(function() {
+		Max();
+	},
+	100);
+}
+
+window.onresize = function () {
+	setTimeout(function() {
+		Max();
+	},
+	100);
+}
+</script>
+
+</head>
+
+<body>
+
+<input type="button" value="Format" onclick="Format()" /> <input type="button" value="Replace" onclick="Replace()" />
+<br />
+From <input type="text" id="from" size="20" /> To <input type="text" id="to" size="20" /> <input type="checkbox" id="is_regex" /><label for="is_regex">Regex</label>
+
+<br />
+<textarea id="desktop"></textarea>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Moo Scroll</title>
+
+<script type="text/javascript" src="http://down.leakon.com/software/2009/01/mootools-1.2.1-core-yc.js"></script>
+<script type="text/javascript" src="moo_util.js"></script>
+
+
+<style type="text/css">
+div.scrollBoxLine	{border:1px solid red; line-height:20px; height:20px; overflow:hidden; padding:2px; width:100px;}
+</style>
+
+</head>
+
+<body>
+
+<div id="scroll_box" class="scrollBoxLine">
+
+</div>
+
+
+<script type="text/javascript">
+
+
+var scrollList	= [
+'11',
+'22',
+'33',
+'44'
+];
+
+var objScroll	= new ScrollBase('scroll_box', scrollList);
+objScroll.set({'scroll_speed':10, 'line_height':20});
+objScroll.play();
+
+</script>
+
+
+</body>
+</html>

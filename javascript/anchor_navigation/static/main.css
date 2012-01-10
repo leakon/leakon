@@ -1,0 +1,100 @@
+@CHARSET "UTF-8";
+/******* GENERAL RESET *******/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em,
+font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody,
+ tfoot, thead, tr, th, td {
+border:0pt none;
+font-family:inherit;
+font-size:100%;
+font-style:inherit;
+font-weight:inherit;
+margin:0pt;
+padding:0pt;
+vertical-align:baseline;
+}
+body{
+	line-height:14px;
+	font-size: 12px;
+	background: #fff;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	margin:0pt;
+	cursor:default;
+}
+table{
+	border-collapse:separate;
+	border-spacing:0pt;
+}
+caption, th, td{
+	font-weight:normal;
+	text-align:left;
+}
+blockquote:before, blockquote:after, q:before, q:after{
+	content:"";
+}
+blockquote, q{
+	quotes:"" "";
+}
+strong{
+	font-weight: 700;
+}
+.clear{
+	clear: both;
+	height: 0;
+	visibility: hidden;
+	display: block;
+}
+/******* /GENERAL RESET *******/
+/******* LOGO *******/
+#logo{
+	text-align: center;
+	margin: 15px auto;
+}
+/******* /LOGO *******/
+/******* MENU *******/
+#menu{
+	width: 412px;
+	margin: 30px auto 0;
+}
+#menu ul{
+	text-align: left;
+}
+#menu ul li{
+	float:left;
+	list-style: none;
+	list-style-position: outside;
+}
+#menu ul li a{
+	color: #7c7c7c;
+	margin: 0 1px 0 0;
+	float:left;
+}
+#menu ul li a img{
+	float:left;
+}
+/******* LOADING *******/
+#loading{
+	position: absolute;
+	top: 0px;
+	margin: 0pt auto;
+	padding: 0.5em;
+	background: #ff8a00;
+	font-weight: 700;
+	color: #fff;
+	display: none;
+}
+/******* /LOADING *******/
+/******* /MENU *******/
+/******* CONTENT *******/
+#content h1{
+	color: #6fa5fd;
+	font-size: 24px;
+	line-height: 1em;
+	margin: 1em;
+}
+#content p{
+	color: #7e7e7e;
+	font-size: 12px;
+	line-height: 1em;
+	margin: 1em 1em 1em 2.5em;
+}
+/******* /CONTENT *******/

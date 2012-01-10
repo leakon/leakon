@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<title>Loader Chain</title>
+
+
+<script type="text/javascript">
+
+var ScriptUrl	= 'http://code.leakon.com/leakon/javascript/loader_chain/loader_wait.php?wait=';
+var TotalLog	= Array();
+
+function ShowLog() {
+	document.body.innerHTML = document.body.innerHTML + '<br />' +  TotalLog.join('\t<br />\n');
+}
+function WriteLog(str) {
+	TotalLog.push(str);
+	document.title	= TotalLog.length + '|' + document.title;
+}
+
+function SFLoaderFire(loaderInstance, idxOfChain) {
+	this.fire = function() {
+
+
+	//	WriteLog('[38] ' + idxOfChain + ' Fire');
+
+		if (document.addEventListener) {
+
+		//	var strReadyState	= loaderInstance.getObject(idxOfChain).readyState;
+		//	alert(strReadyState);
+
+			loaderInstance.load(idxOfChain);
+
+		} else {
+			var strReadyState	= loaderInstance.getObject(idxOfChain).readyState;
+			if ('loaded' == strReadyState || 'complete' == strReadyState) {
+				WriteLog('[40] ' + idxOfChain + ' On state change: ' + loaderInstance.getObject(idxOfChain).readyState);
+				loaderInstance.load(idxOfChain);
+			}
+		}
+		return;
+	}
+}
+
+function SFLoaderChain(paramParentNode) {
+
+	var parentNode	= paramParentNode;
+	var arrChain	= new Array();
+	var arrBindFunc	= new Array();
+
+	this.push	= function(objectToLoad, functionToCall) {
+		var oneItem	= {obj:objectToLoad, func:functionToCall};
+		arrChain.push(oneItem);
+	}
+
+	this.getObject	= function(objIndex) {
+		return	arrChain[objIndex].obj;
+	}
+
+	this.execute	= function() {
+		this.bindAndAppend(0);
+	}
+
+	this.bindAndAppend	= function(i) {
+
+		var FuncToBind	= new SFLoaderFire(this, i);
+
+		if (document.addEventListener) {
+			arrChain[i].obj.addEventListener('load', FuncToBind.fire, false);
+		//	arrChain[i].obj.addEventListener('readystatechange', FuncToBind.fire, false);
+		} else {
+			arrChain[i].obj.attachEvent('onreadystatechange', FuncToBind.fire);
+		}
+
+		WriteLog('[20] ' + i + ' Bind event and Append node');
+
+		setTimeout(
+			function() {
+				parentNode.appendChild(arrChain[i].obj);
+			},
+			20
+		);
+
+	}
+
+	this.load	= function(indexOfChain) {
+
+		WriteLog('[50] ' + indexOfChain + ' This load');
+
+		if (arrChain[indexOfChain].func) {
+			arrChain[indexOfChain].func.call();
+		}
+
+		var nextIndex	= indexOfChain + 1;
+
+		if (nextIndex < arrChain.length) {
+			this.bindAndAppend(nextIndex);
+		}
+	}
+
+}
+
+function CallScript0() {
+	WriteLog('[80] 0 CallScript run');
+}
+function CallScript1() {
+	WriteLog('[80] 1 CallScript run');
+}
+function CallScript2() {
+	WriteLog('[80] 2 CallScript run');
+}
+function CallScript3() {
+	WriteLog('[80] 3 CallScript run');
+}
+function CallScript4() {
+	WriteLog('[80] 4 CallScript run');
+}
+function CallScript5() {
+	WriteLog('[80] 5 CallScript run');
+}
+function CallScript6() {
+	WriteLog('[80] 6 CallScript run');
+	WriteLog('------ The End -------');
+}
+
+</script>
+
+</head>
+
+<body>
+
+<p id="LoaderTest">
+The Loader Chain Test
+</p>
+
+<a href="javascript:ShowLog();">Loader Chain</a>
+
+<script type="text/javascript">
+
+
+var myLoader	= new SFLoaderChain(document.body);
+
+/*
+var headTag	= document.getElementsByTagName('head');
+var nodeHead	= headTag[0];
+var myLoader	= new SFLoaderChain(nodeHead);
+*/
+
+
+var arrScript		= Array();
+
+for(var i = 0; i < 6; i++) {
+	arrScript[i]		= document.createElement('script');
+	arrScript[i].src	= ScriptUrl + i;
+}
+
+myLoader.push(arrScript[0], CallScript0);
+myLoader.push(arrScript[1], CallScript1);
+
+
+if (0) {
+	/*
+	__sfDialogStyleTag	= document.createElement('link');
+	__sfDialogStyleTag.rel	= 'stylesheet';
+	__sfDialogStyleTag.type	= 'text/css';
+	//__sfDialogStyleTag.href	= 'http://code.leakon.com/leakon/javascript/loader_chain/loader_css.php';
+	__sfDialogStyleTag.href	= 'http://code.leakon.com/leakon/javascript/loader_chain/loader.css';
+	//myLoader.push(__sfDialogStyleTag, CallScript6);
+	*/
+} else {
+
+	__sfDialogStyleTag	= document.createElement('script');
+	__sfDialogStyleTag.href	= 'http://code.leakon.com/leakon/javascript/loader_chain/loader_css.php';
+//	myLoader.push(__sfDialogStyleTag, CallScript6);
+
+}
+
+
+myLoader.push(arrScript[2], CallScript2);
+myLoader.push(arrScript[3], CallScript3);
+myLoader.push(arrScript[4], CallScript4);
+myLoader.push(arrScript[5], CallScript5);
+
+
+setTimeout(
+	function() {
+
+		var arrStyle	= Array();
+		arrStyle.push('#LoaderTest {border:12px dotted green; font-size:32px; font-weight:bold;}');
+		arrStyle.push('#AfterCreateStyle {border:6px solid red; font-size:48px; background-color:blue;}');
+
+		var __SFStyleElement		= document.createElement('style');
+		__SFStyleElement.setAttribute('type', 'text/css');
+
+		var innerString			= arrStyle.join('\n');
+
+		if (__SFStyleElement.styleSheet) {
+			__SFStyleElement.styleSheet.cssText = innerString;
+		} else {
+			__SFStyleElement.appendChild(document.createTextNode(innerString));
+		//	__SFStyleElement.innerHTML	= innerString;
+		}
+
+
+	//	document.body.appendChild(__SFStyleElement);
+		document.getElementsByTagName("head")[0].appendChild(__SFStyleElement);
+
+
+		setTimeout(
+			function() {
+
+				var objAfterCreate		= document.createElement('div');
+				objAfterCreate.innerHTML	= 'The after div.';
+				objAfterCreate.id		= 'AfterCreateStyle';
+				document.body.appendChild(objAfterCreate);
+
+			},
+			500
+		);
+
+	},
+	1000
+);
+
+
+
+myLoader.execute();
+
+
+
+
+</script>
+
+</body>
+</html>

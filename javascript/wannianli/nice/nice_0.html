@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="content-language" content="UTF-8" />
+<title>Dates</title>
+
+<script type="text/javascript" src="define.js"></script>
+
+<script type="text/javascript">
+
+function pr(s) {
+
+	document.write('<p>');
+	document.write(res);
+	document.write('</p>');
+}
+
+</script>
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+
+/*
+t.publicFunc('llk');
+//t.privateFunc('llk');
+
+
+alert(3232);
+
+*/
+
+var util	= new DateUtil();
+
+function GetLunar() {
+
+	var o	= document.getElementById('date_input');
+
+	var arr	= o.value.split('-');
+
+	var res	= [];
+
+	var t	= new DateUtil();
+
+
+	res.push(t.getLunarMonthByModernObj(arr[0], arr[1], arr[2]));
+	res.push(t.getLunarDateByModernObj(parseInt(arr[0]), parseInt(arr[1]), parseInt(arr[2])));
+
+	alert(res);
+
+
+}
+</script>
+
+
+<input type="text" value="<?php echo date('Y-m-d') ?>" name="date_input" id="date_input" />
+
+<input type="button" value="Date" onclick="GetLunar()" />
+
+
+<div id="lunar_result">
+</div>
+
+
+</body>
+</html>
+

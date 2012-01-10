@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Baidu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script type="text/javascript">
+
+__BAIDU_IS_MSIE__	= !!(/MSIE/.test(navigator.userAgent)) || !!(window.opera);
+
+__BAIDU_UID__	= 1;
+__BAIDU_KW_ENCODED__	= 2;
+
+function Record(objJSON) {
+
+	var Params	= new Array();
+	Params.push('uid=' + __BAIDU_UID__);
+	Params.push('kw=' + __BAIDU_KW_ENCODED__);
+
+	if (typeof objJSON.type != 'undefined')
+		Params.push('type=' + objJSON.type);
+
+	if (typeof objJSON.group != 'undefined')
+		Params.push('group=' + objJSON.group);
+
+	if (typeof objJSON.surl != 'undefined')
+		Params.push('surl=' + encodeURIComponent(objJSON.surl));
+
+	var strSrc	= 'stat.ico?';
+	strSrc		+= Params.join('&');
+
+	var objImg	= document.createElement('img');
+	objImg.src	= strSrc;
+
+	document.getElementById('stat').appendChild(objImg);
+
+	return	true;
+}
+
+function BindLink(idx, surl) {
+	this.Fire = function() {
+		this.mId = idx;
+		this.mUrl = surl;
+		return	Record({'type': 'l', 'group': this.mId, 'surl': this.mUrl});
+	}
+}
+
+function AttachEvent() {
+	var pNode = document.getElementById('result');
+	if (pNode) {
+		var box = pNode.getElementsByTagName('a');
+
+		if (__BAIDU_IS_MSIE__) {
+			for(var i = 0; i < box.length; i++) {
+				var bindFunc = new BindLink('a', box[i].href);
+				box[i].attachEvent('onclick', bindFunc.Fire);
+			}
+		} else {
+			for(var i = 0; i < box.length; i++) {
+				var bindFunc = new BindLink('a', box[i].href);
+				box[i].addEventListener('click', bindFunc.Fire, false);
+			}
+		}
+
+	}
+}
+
+window.onload = AttachEvent;
+
+</script>
+
+</head>
+
+<body>
+
+<div id="result">
+
+<a href="attach_event.html" target="_blank">BaiduBaiduBaiduBaidu</a>
+
+</div>
+
+</body>
+</html>

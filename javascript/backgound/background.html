@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<meta http-equiv="content-language" content="gbk" />
+<title>Back Ground Fav Icon</title>
+
+<style type="text/css">
+*	{font-family:Courier New;font-size:13px;}
+
+.fav	{background:url('http://www.leakon.com/favicon.ico') no-repeat;}
+.ssfav	{background:url('favicon_google.ico') no-repeat; border:1px solid red;}
+
+</style>
+
+</head>
+
+<body>
+
+
+<table cellpadding="0" cellspacing="0" width="400" border="1">
+<tr>
+	<td id="favicon" class="fav" width="80" height="30">&nbsp;</td>
+	<td>http://www.leakon.com</td>
+</tr>
+</table>
+
+
+
+<script type="text/javascript">
+
+function loadFunc() {
+
+	setTimeout(function() {
+		var url;
+		url = 'http://www.leakon.com/favicon.ico';
+		url = 'favicon.ico';
+		var obj = document.getElementById('favicon');
+		obj.style.backgroundRepeat = 'no-repeat';
+		obj.style.backgroundImage = 'url("' + url + '")';
+	//	obj.style.background = 'url("' + url + '") no-repeat';
+	}, 1000);
+
+}
+
+
+window.onload = loadFunc;
+
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="content-language" content="UTF-8" />
+<title>Dates</title>
+
+<script type="text/javascript" src="one.js"></script>
+
+<script type="text/javascript">
+
+function pr(s) {
+	document.write('<p>');
+	document.write(res);
+	document.write('</p>');
+}
+
+</script>
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+var util	= new Leakon_Lunar();
+var res		= null;
+
+function GetLunar() {
+
+
+	var arrHtml = [];
+	var timeStart		= new Date();
+//	arrHtml.push('开始：' + timeStart.getTime());
+
+	var y, m, d;
+	for (y = 2006; y < 2008; y++) {
+
+		for (m = 0; m < 12; m++) {
+
+			for (d = 1; d < 30; d++) {
+
+				arr	= [y, m, d];
+				res	= util.init(arr);
+			}
+
+		}
+
+	}
+
+//	release
+
+	var timeStop		= new Date();
+//	arrHtml.push('结束：' + timeStop.getTime());
+
+	var timeDiff		= timeStop.getTime() - timeStart.getTime();
+	timeDiff		= timeDiff / 1000;
+	arrHtml.push('用时：' + timeDiff + ' s');
+
+	arr	= [2008, 10, 26];
+	res	= util.init(arr);
+
+	arr	= [2008, 10, 25];
+	res	= util.init(arr);
+
+	arr	= [2008, 10, 24];
+	res	= util.init(arr);
+
+
+	util.getTest();
+
+	// date
+
+
+	var o	= document.getElementById('date_input');
+
+	var arr	= o.value.split('-');
+
+	var res;
+
+	res	= util.init(arr);
+
+	arrHtml.push('　年：' + res.lunar_year);
+	arrHtml.push('　月：' + res.lunar_month);
+	arrHtml.push('　日：' + res.lunar_day);
+	arrHtml.push('生肖：' + res.lunar_zodiac);
+
+	var arr_solar_string	= [];
+	for (var idx in res.solar_term) {
+		arr_solar_string.push(idx + ':' + res.solar_term[idx]);
+	}
+	arrHtml.push('节气：' + arr_solar_string.join(','));
+
+
+
+	for (var idx in res) {
+		arrHtml.push(idx + ':' + res[idx]);
+	}
+
+
+
+	var rr	= document.getElementById('lunar_result');
+	rr.innerHTML	= arrHtml.join('<br />');
+
+}
+
+</script>
+
+<?php
+
+$date_value	= date('Y-m-d');
+$date_value	= '2006-8-29';
+
+?>
+<input type="text" value="<?php echo $date_value ?>" name="date_input" id="date_input" />
+
+<input type="button" value="Date" onclick="GetLunar()" />
+<input type="button" value="Release" onclick="util.release()" />
+
+<div id="lunar_result"></div>
+
+</body>
+</html>

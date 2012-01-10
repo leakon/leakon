@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh" xml:lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>iframe_cookie</title>
+
+<style type="text/css">
+</style>
+
+
+<script type="text/javascript">
+function signIn() {
+	var objIfm	= document.createElement('iframe');
+	objIfm.src	= 'http://dev.sofav.com/toolbar/Authenticate?mail=leakon%40gmail.com&password=123456';
+	document.body.appendChild(objIfm);
+}
+
+function signOut() {
+	var objIfm	= document.createElement('iframe');
+	objIfm.src	= 'http://dev.sofav.com/toolbar/signOut';
+	document.body.appendChild(objIfm);
+}
+
+function grantCookie() {
+	var objIfm	= document.createElement('iframe');
+//	objIfm.src	= '';
+	objIfm.name	= 'sofav_grant_cookie_iframe';
+	document.body.appendChild(objIfm);
+
+	var objForm	= document.createElement('form');
+	objForm.action	= 'http://dev.sofav.com/toolbar/grantCookie';
+	objForm.target	= 'sofav_grant_cookie_iframe';
+	document.body.appendChild(objForm);
+	objForm.submit();
+}
+
+function DynamicGrantCookie() {
+	var objForm	= document.getElementById('grant_cookie_form');
+	objForm.submit();
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div>
+<input type="button" value="Iframe_signIn" class="button" onclick="signIn()" />
+<input type="button" value="Iframe_signOut" class="button" onclick="signOut()" />
+<input type="button" value="Iframe_grantCookie" class="button" onclick="grantCookie()" />
+
+</div>
+
+<h3>Form Sign In:</h3>
+<div>
+<form id="sign_in_form" action="http://dev.sofav.com/toolbar/Authenticate" method="get" target="free_iframe">
+<input type="hidden" name="mail" value="leakon@gmail.com" />
+<input type="hidden" name="password" value="123456" />
+<input type="submit" value="signIn" />
+</form>
+</div>
+
+<h3>Form Sign Out:</h3>
+<div>
+<form id="sign_out_form" action="http://dev.sofav.com/toolbar/signOut" method="get" target="free_iframe">
+<input type="submit" value="signOut" />
+</form>
+</div>
+<div>
+
+<h3>Form Grant Cookie:</h3>
+<div>
+<form id="grant_cookie_form" action="http://dev.sofav.com/toolbar/grantCookie" method="get" target="free_iframe">
+<input type="hidden" name="mail" value="leakon@gmail.com" />
+<input type="hidden" name="password" value="123456" />
+<input type="submit" value="grantCookie" />
+<input type="button" value="DynamicGrantCookie" onclick="DynamicGrantCookie();" />
+</form>
+</div>
+<div>
+<iframe name="free_iframe" src=""></iframe>
+
+<!--
+<iframe name="free_iframe_auto" src="http://dev.sofav.com/toolbar/grantCookie"></iframe>
+-->
+
+
+</div>
+
+</body>
+</html>

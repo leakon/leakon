@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Set Href</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<style type="text/css">
+body	{margin:8px; padding:0;}
+body	{font-family:Verdana; }
+a	{font-size:36px; line-height:64px;}
+p	{padding-bottom:36px;}
+</style>
+
+<script type="text/javascript">
+
+function SetHref_HasBug() {
+
+	var objLink	= document.getElementById('link_1');
+
+	var strHref	= 'http://www.google.com/';
+
+	objLink.href	= strHref;
+
+}
+
+function SetHref_BugFixed() {
+
+	var objLink	= document.getElementById('link_2');
+
+	var strHref	= ' ' + 'http://www.google.com/';
+
+	objLink.href	= strHref;
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+
+	<h1>
+		In IE, check the href after click the links.
+	</h1>
+
+<div>
+
+
+	<p>
+		With bug:
+		<br />
+		<a id="link_1" href="http://www.leakon.com/link_1">http://www.leakon.com/Link_1</a>
+		<br />
+		<input type="button" onclick="SetHref_HasBug();" value="Set Href (Has bug)" />
+	</p>
+
+
+	<p>
+		Bug fixed:
+		<br />
+		<a id="link_2" href="http://www.leakon.com/link_2">http://www.leakon.com/Link_2</a>
+		<br />
+		<input type="button" onclick="SetHref_BugFixed();" value="Set Href (Bug fixed)" />
+	</p>
+
+</div>
+
+<!--
+
+IE 的 bug。
+
+问题描述：
+当 A 标签的文本是 http 开头时，设置 href 属性，会同时以相同的值更新链接文本，反之亦然。
+
+解决方法：
+在设置 href 时，在开头添加一个空格 ' '，即可解决此 bug。
+
+
+
+-->
+
+</body>
+</html>
