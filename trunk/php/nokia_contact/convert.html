@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Convert</title>
+
+</head>
+<body>
+
+<input type="button" value="convert" onclick="conv()" />
+
+<textarea id="txt" style="display:block; width:600px; height:400px;"></textarea>
+
+
+
+<script type="text/javascript">
+
+function conv() {
+
+	var obj	= document.getElementById('txt');
+
+	obj.value	= obj.value.replace(/\n/g, ",");
+
+	obj.focus();
+
+}
+
+
+</script>
+
+</body>
+</html>

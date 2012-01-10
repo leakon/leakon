@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<meta http-equiv="content-language" content="gbk" />
+<title>Dynamic Style</title>
+
+<link rel="stylesheet" type="text/css" href="ofile.css">
+
+</head>
+
+<body>
+
+<style type="text/css">
+.dynamicStyle	{color:red;}
+</style>
+
+<style type="text/css">
+.simpleStyle	{display:none;}
+</style>
+
+
+<div class="dynamicStyle">Dynamic Style</div>
+
+<div class="outerFile">Outer File</div>
+
+<div class="simpleStyle">Simple Style</div>
+
+<a href="#" class="simpleStyle">Simple Link</a>
+
+<script type="text/javascript">
+
+function changeCss(theClass,element,value) {
+
+	var cssRulesKey = 'rules';
+	//rules, cssRules
+
+	try {
+		// detect browser, IE use "rules" other than "cssRules"!
+		if (document.styleSheets.length) {
+			for(var i = 0, len = document.styleSheets.length; i < len; i++) {
+				if (!document.styleSheets[i][cssRulesKey]) {
+					// IE
+					cssRulesKey = 'cssRules';
+					break;
+				}
+			}
+		}
+
+	} catch (e) {alert(e)}
+
+	for (var S = 0, sLen = document.styleSheets.length; S < sLen; S++){
+
+		var styleRef = null;
+
+		try {
+			styleRef = document.styleSheets[S][cssRulesKey];
+		} catch (e) {}
+
+		if (!styleRef) {
+			continue;
+		}
+
+		for (var R = 0, rLen = styleRef.length; R < rLen; R++) {
+
+			var cssText = '';
+
+			try {
+				cssText = styleRef[R].selectorText;
+
+			} catch (e) {}
+
+			if (cssText == theClass) {
+				styleRef[R].style[element] = value;
+			}
+
+		}
+	}
+
+	return;
+
+}
+
+setTimeout(
+	function() {
+		changeCss('.dynamicStyle', 'color', 'green');
+		changeCss('.outerFile', 'fontSize', '12px');
+		changeCss('.outerFile', 'fontWeight', 'normal');
+		changeCss('.simpleStyle', 'display', '');
+	},
+	1000
+);
+
+
+</script>
+</body>
+</html>

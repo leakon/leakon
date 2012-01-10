@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<title>create_different_instance</title>
+
+<script type="text/javascript">
+
+var MyClass	= function(inputParam) {
+
+	var insName	= inputParam;
+	var callback	= {};
+
+	this.setCB	= function(cb) {
+		callback	= cb;
+	}
+
+	this.sayHi	= function(cb) {
+		document.write('<p>' + insName + '</p>');
+		if (callback) {
+			callback();
+		};
+	}
+
+}
+
+var objInst_1	= new MyClass('foo');
+//var objInst_2	= new MyClass('bar');
+
+objInst_1.setCB(function() {
+	var objInst_2	= new MyClass('bar');
+	objInst_2.sayHi();
+});
+
+</script>
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+objInst_1.sayHi();
+
+//	objInst_2.sayHi();
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<html xml:lang="zh" xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>NCR</title>
+</head>
+<body>
+<script type="text/javascript">
+
+/*
+	获取、设置Textarea对象中光标的位置
+
+*/
+
+// add by Liulikang (2010-05-07)
+function setTextAreaPosition(obj, pos) {
+	if(obj.createTextRange) {
+		/* Create a TextRange, set the internal pointer to
+		a specified position and show the cursor at this
+		position
+		*/
+		var range = obj.createTextRange();
+		range.move("character", pos);
+		range.select();
+	} else if(obj.selectionStart) {
+		/* Gecko is a little bit shorter on that. Simply
+		focus the element and set the selection to a
+		specified position
+		*/
+		obj.focus();
+		obj.setSelectionRange(pos, pos);
+	} else {
+	}
+}
+
+
+   /*
+   **  Returns the caret (cursor) position of the specified text field.
+   **  Return value range is 0-oField.length.
+   */
+   function doGetCaretPosition (oField) {
+
+     // Initialize
+     var iCaretPos = 0;
+
+     // IE Support
+     if (document.selection) {
+
+       // Set focus on the element
+       oField.focus ();
+
+       // To get cursor position, get empty selection range
+       var oSel = document.selection.createRange ();
+
+       // Move selection start to 0 position
+       oSel.moveStart ('character', -oField.value.length);
+
+       // The caret position is selection length
+       iCaretPos = oSel.text.length;
+     }
+
+     // Firefox support
+     else if (oField.selectionStart || oField.selectionStart == '0')
+       iCaretPos = oField.selectionStart;
+
+     // Return results
+     return (iCaretPos);
+   }
+
+   /*
+   **  Sets the caret (cursor) position of the specified text field.
+   **  Valid positions are 0-oField.length.
+   */
+   function doSetCaretPosition (oField, iCaretPos) {
+
+     // IE Support
+     if (document.selection) {
+
+       // Set focus on the element
+       oField.focus ();
+
+       // Create empty selection range
+       var oSel = document.selection.createRange ();
+
+       // Move selection start and end to 0 position
+       oSel.moveStart ('character', -oField.value.length);
+
+       // Move selection start and end to desired position
+       oSel.moveStart ('character', iCaretPos);
+       oSel.moveEnd ('character', 0);
+       oSel.select ();
+     }
+
+     // Firefox support
+     else if (oField.selectionStart || oField.selectionStart == '0') {
+       oField.selectionStart = iCaretPos;
+       oField.selectionEnd = iCaretPos;
+       oField.focus ();
+     }
+   }
+
+
+</script>
+
+INPUT TEXT:
+<br />
+<textarea rows="4" cols="30" id="id_in"></textarea>
+<br />
+<input type="button" value="CONVERT" onclick="clickConv()" />
+<br />
+RESULTS:
+<br />
+<textarea rows="4" cols="30" id="id_out"></textarea>
+</body>
+</html>

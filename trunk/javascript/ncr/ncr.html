@@ -1,0 +1,39 @@
+<html xml:lang="zh" xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>NCR</title>
+</head>
+<body>
+<script type="text/javascript">
+
+function doConvert(strIn) {
+	var retStr	= '';
+	for (var i = 0, len = strIn.length; i < len; i++) {
+		if (strIn.charCodeAt(i) > 127) {
+			retStr	+= '&#' + strIn.charCodeAt(i) + ';';
+		} else {
+			retStr	+= strIn.charAt(i);
+		}
+	}
+	return	retStr;
+}
+
+
+function clickConv() {
+	var obj		= document.getElementById('id_out');
+	obj.value	= doConvert(document.getElementById('id_in').value);
+}
+
+</script>
+
+INPUT TEXT:
+<br />
+<textarea rows="4" cols="30" id="id_in"></textarea>
+<br />
+<input type="button" value="CONVERT" onclick="clickConv()" />
+<br />
+RESULTS:
+<br />
+<textarea rows="4" cols="30" id="id_out"></textarea>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>Loader Chain</title>
+</head>
+<body>
+<a href="">Loader Chain</a>
+
+<div id="appendTarget">
+AppendTarget
+</div>
+
+<script>
+
+var tagScript	= document.createElement('script');
+tagScript.src	= 'http://code.kk.com/leakon/javascript/loader_chain/loader_wait.php?wait=0';
+
+
+tagScript.onreadystatechange = function() {
+	alert(this.readyState);
+}
+
+var tt	= document.getElementById('appendTarget');
+tt.appendChild(tagScript);
+
+</script>
+
+</body>
+</html>

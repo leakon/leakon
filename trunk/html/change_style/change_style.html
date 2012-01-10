@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ChangeStyle</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" type="text/css" title="Theme_Leakon" href="leakon.css" />
+<link rel="alternate stylesheet" type="text/css" title="Theme_Yoyo" href="yoyo.css" />
+
+<script type="text/javascript">
+function setStyle(strTitle) {
+
+	strTitle	= strTitle.toLowerCase();
+
+	var i, linkTitle, isSelected;
+
+	var arrStyles	= document.getElementsByTagName("link");
+
+	for(var i = 0, len = arrStyles.length; i < len; i++) {
+
+		if (-1 != arrStyles[i].getAttribute("rel").indexOf("stylesheet")
+			&& "text/css" == arrStyles[i].getAttribute("type")
+		) {
+
+			linkTitle	= arrStyles[i].getAttribute("title").toLowerCase();
+
+			isSelected	= ('theme_' + strTitle) == linkTitle;
+
+			// load style and make sure the css has been rendered
+			// BEFORE set it enabled
+			arrStyles[i].disabled = !isSelected;
+
+		}
+
+	}
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div>
+
+<input type="button" value="Leakon" onclick="setStyle('leakon');" />
+<input type="button" value="Yoyo" onclick="setStyle('yoyo');" />
+<input type="button" value="Hello" onclick="addScript();" />
+
+</div>
+
+Hello World
+
+<div id="step_1">STEP_1</div>
+<div id="step_2">STEP_2</div>
+
+
+<script>
+
+function addScript() {
+var headID = document.getElementsByTagName("head")[0];
+var cssNode = document.createElement('link');
+cssNode.type = 'text/css';
+cssNode.rel = 'stylesheet';
+cssNode.href = 'hello.css?rand=' + Math.random();
+cssNode.media = 'screen';
+headID.appendChild(cssNode);
+}
+
+</script>
+
+
+
+</body>
+</html>

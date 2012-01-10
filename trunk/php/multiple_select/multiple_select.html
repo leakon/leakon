@@ -1,0 +1,128 @@
+﻿<html>
+<head>
+	<title>Leakon</title>
+
+</head>
+
+<body>
+
+<form method="post" onsubmit="return SelectAll()">
+
+<table>
+
+
+
+<tbody>
+<tr>
+	<td>
+		列表
+		</br>
+		<select name="" multiple="multiple" id="ff" style="width:100px; height:300px">
+		<option value="20">软件</option>
+		<option value="9">上市公司</option>
+		<option value="8">人物</option>
+		<option value="7">小说</option>
+		<option value="5">游戏</option>
+		<option value="4">电视剧</option>
+		<option value="3">美女</option>
+		<option value="10">数码产品</option>
+		<option value="11">体育热点</option>
+		<option value="19">电视节目</option>
+		<option value="18">娱乐女明星</option>
+		<option value="17">娱乐男明星</option>
+		<option value="16">女歌手</option>
+		<option value="15">男歌手</option>
+		<option value="14">风景名胜</option>
+		<option value="13">汽车</option>
+		<option value="12">高校</option>
+		</select>
+	</td>
+	<td>
+		<input value="添加&gt;" type="button" onclick="Add()" /></br></br>
+		<input value="&lt;删除"  type="button" onclick="Del()" /></br></br>
+
+		<input value="添加全部&gt;&gt;" type="button" onclick="AddAll()" /></br></br>
+
+		<input value="&lt;&lt;删除全部" type="button" onclick="DelAll()" /></br></br>
+	</td>
+
+	<td >
+		列表
+		</br>
+		<select name="tt[]" multiple="multiple" id="tt" style="width:100px; height:300px" ></select>
+	</td>
+</tr>
+
+</tbody>
+
+</table>
+
+<input type="submit" value="submit" />
+</form>
+
+
+<script type="text/javascript">
+
+var objSelectFrom = document.getElementById('ff');
+var objSelectTo = document.getElementById('tt');
+
+function Add() {
+	Exchange(objSelectFrom, objSelectTo, 0, 0);
+}
+
+function Del() {
+	Exchange(objSelectTo, objSelectFrom, 1, 0);
+}
+
+function AddAll() {
+	Exchange(objSelectFrom, objSelectTo, 0, 1);
+}
+
+function DelAll() {
+	Exchange(objSelectTo, objSelectFrom, 1, 1);
+}
+
+
+function Exchange(f, t, del, all) {
+
+	var arr = [];
+	for (var i = 0; i < f.options.length; i++) {
+		if (all || f.options[i].selected) {
+			arr.push(f.options[i]);
+		}
+	}
+
+	var exist = [];
+	for (var i = 0; i < t.options.length; i++) {
+		exist.push(t.options[i].value);
+	}
+
+	var searchStr	= '|' + exist.join('|');
+
+	for (var i = 0; i < arr.length; i++) {
+		if (del) {
+			f.removeChild(arr[i]);
+			continue;
+		}
+		if (-1 == searchStr.indexOf( '|' + arr[i].value ))  {
+			var n = arr[i].cloneNode(true);
+			t.appendChild(n);
+		}
+	}
+}
+
+function SelectAll() {
+	for (var i = 0; i < objSelectTo.options.length; i++) {
+		objSelectTo.options[i].selected = true;
+	}
+	return	true;
+}
+
+</script>
+<?php
+
+	print_r($_REQUEST);
+
+?>
+</body>
+</html>

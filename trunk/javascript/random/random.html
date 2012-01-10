@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh" xml:lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Javascript Random</title>
+
+<style type="text/css">
+</style>
+
+<script type="text/javascript">
+
+/**
+ * Retrieve a sub array from arrInput in random way.
+ *
+ * Example:
+ * arrInput	= [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+ * RetrieveRandomArray(arrOutput, 4) will be:
+ * 		[4, 1, 3, 9]
+ * 		[1, 7, 4, 6]
+ * 		[8, 5, 2, 10]
+ *		...
+ */
+function RetrieveRandomArray(arrInput, lengthOfOutput) {
+
+	var arrRet		= [];
+
+	var lengthOfInput	= arrInput.length;
+	var objCache		= {};
+	var intRand		= -1;
+
+	// Find an element by random position in each loop
+	for (var i = 0; i < lengthOfOutput; i++) {
+
+		intRand	= -1;
+
+		while (-1 === intRand) {
+
+			intRand		= Math.ceil(Math.random() * 10000000) % lengthOfInput;
+
+			// the element is not in the cache
+			if (!objCache[intRand]) {
+
+				arrRet.push(arrInput[intRand]);		// add to result array
+				objCache[intRand]	= 1;		// cache the element
+				break;					// stop this trial, go for next element
+			}
+
+			intRand		= -1;
+
+		}
+
+	}
+
+	return	arrRet;
+
+}
+
+</script>
+
+<head>
+
+<body>
+
+<h3>Javascript Random</h3>
+
+
+<script type="text/javascript">
+
+	var i, j, k, arrOut;
+	var intBegin	= 0;
+	var intEnd	= 1000;
+	var intBegin_2	= intBegin - 1;
+	var arrTest	= [];
+	for (i = intBegin; i < intEnd; i++) {
+		arrTest.push(i);
+	}
+
+	// Unit Test
+
+if (0) {
+	// Case 1
+	// Test output length
+	for (i = 0; i < 10000; i++) {
+
+		arrOut	= RetrieveRandomArray(arrTest, 5);
+
+		if (5 != arrOut.length) {
+			alert('Test output length Failed!');
+			break;
+		}
+
+	}
+
+	document.write("<br />" + 'Test output length Success!' + "<br />");
+}
+
+// ------------------------------------------------------------------ //
+
+
+if (1) {
+	// Case 2
+	// Test output element
+	for (i = 0; i < 100000; i++) {
+
+		arrOut	= RetrieveRandomArray(arrTest, 5);
+
+		for (j = 0; j < 5; j++) {
+
+
+
+			if (intBegin_2 < arrOut[j] && arrOut[j] < intEnd) {
+			} else {
+				alert('Test output element' + ' Failed!');
+				break;
+			}
+		}
+
+
+	}
+
+	document.write("<br />" + 'Test output element' + ' Success!' + "<br />");
+}
+
+// ------------------------------------------------------------------ //
+
+/*
+//	alert(arrTest);
+
+	var rree		= RetrieveRandomArray(arrTest, 5);
+//	document.title	= rree.join('_');
+
+	// test begin
+	document.write((new Date()) + "<br />");
+	for (var i = 0; i < 1000; i++) {
+
+		rree	= RetrieveRandomArray(arrTest, 5);
+
+		if (5 != rree.length) {
+			document.write("[" + i + "] ");
+			document.write(rree.join('_'));
+			break;
+		}
+
+	}
+
+	document.write("len: " + arrTest.length + "<br />");
+	document.write((new Date()));
+*/
+
+</script>
+
+</body>
+</html>

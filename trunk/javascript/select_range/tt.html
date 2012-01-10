@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+
+
+
+
+
+
+
+<html>
+  <head>
+    <title>配置首页推广文字链</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="Content-Type" content="text/html; charset=gbk">
+
+  </head>
+
+  <body leftMargin="10" onload="showDemo()">
+
+<form id="editForm" name="editForm" onsubmit="return true;" action="" method="post">
+<table class="wwFormTable">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+	  <tr>
+	    <td>当前位置： 配置首页推广文字链</td>
+	  </tr>
+	  <tr>
+	    <td height="20" align="center">
+	    	&nbsp;
+	    	<input type="hidden" name="text.id" value="3" id="editForm_text_id"/>
+
+	    	<input type="hidden" name="text.userid" value="64" id="editForm_text_userid"/>
+
+	    	<input type="hidden" name="text.state" value="1" id="editForm_text_state"/>
+
+	    </td>
+	  </tr>
+	  <tr>
+    	<td align="center">
+        <table width="90%" border="1px" bordercolor="#A2C8F2" align="center" cellpadding="8" cellspacing="0">
+			<tr bgcolor="#ECEFFF">
+			  	<td align="left">
+				  	<span class="p3"><strong>首页推广文字链信息</strong></span><br>
+				    <div align="center"><font color="red"></font></div>
+			  	</td>
+			</tr>
+			<tr>
+				<td class="tdLabel"><label class="label">第一行推广文字内容:</label></td>
+			</tr>
+			<tr>
+				<td>
+					<textarea name="text.content1" cols="100" rows="8" id="row1">&lt;a href=&quot;刘翔&quot; target=&quot;_blank&quot;&gt;刘翔&lt;/a&gt; 孟关良/杨文军 &lt;a href=&quot;女排&quot; target=&quot;_blank&quot;&gt;女排&lt;/a&gt; 王励勤 胡佳 杨维/张洁雯</textarea>
+
+					<input type="button" onclick="DoSelect('row1')" value="添加链接和title信息" />
+
+				</td>
+			</tr>
+			<tr>
+				<td class="tdLabel"><label class="label">第二行推广文字内容:</label></td>
+			</tr>
+			<tr>
+				<td>
+					<textarea name="text.content2" cols="100" rows="8" id="row2">&lt;a href=&quot;http://www.baidu.com&quot; target=&quot;_blank&quot;&gt;王成义&lt;/a&gt; 张军/高凌 王楠/张怡宁 马琳/陈玘 贾战波</textarea>
+
+					<input type="button" onclick="DoSelect('row2')" value="添加链接和title信息" />
+
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div id="helper"></div>
+				</td>
+			</tr>
+
+		  	<tr>
+		  		<td colspan="2">
+	  				<input type="submit" value="保 存"/>&nbsp;
+	  				<input type="button" value="预 览" onclick="showDemo();"/>
+		  		</td>
+		  	</tr>
+
+      	</table>
+      	</td>
+      </tr>
+	  <tr>
+	    <td height="20">&nbsp;</td>
+	  </tr>
+	  <tr>
+    	<td align="center">
+        <table width="90%" border="1px" bordercolor="#A2C8F2" align="center" cellpadding="8" cellspacing="0">
+			<tr bgcolor="#ECEFFF">
+			  	<td align="left">
+				  	<span class="p3"><strong>预览文字链</strong></span><br>
+			  	</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="demoDiv"></div>
+				</td>
+			</tr>
+      	</table>
+      	</td>
+      </tr>
+    </table>
+    </table></form>
+
+
+
+
+    <script language="javascript">
+	function showDemo()
+	{
+		var htmlD1 = document.getElementById('row1');
+		var htmlD2 = document.getElementById('row2');
+		var demoD = document.getElementById('demoDiv');
+		demoD.innerHTML = htmlD1.value + '<br>' + htmlD2.value;
+	}
+
+	var GLOBAL_STRING_OBJECT = {pos:0, len:0, str: ''};
+
+	function DumpString(o) {
+		var str = '';
+		str	+= "pos: " + o.pos + "\n";
+		str	+= "len: " + o.len + "\n";
+		str	+= "str: " + o.str + "";
+		alert(str);
+	}
+
+	function SelectString(obj) {
+		var o = document.getElementById(obj);
+		return	GLOBAL_STRING_OBJECT = GetStringPosition(o);
+	}
+
+	function FreshPreview(slink,target) {
+		var o = document.getElementById(target);
+		var previewStr	= '';
+		previewStr	+= o.value.substring(0, GLOBAL_STRING_OBJECT.pos);
+		//DumpString(GLOBAL_STRING_OBJECT);
+		previewStr	+= '<a href="' + slink + '" target="_blank">' + GLOBAL_STRING_OBJECT.str + '</a>';
+		previewStr	+= o.value.substr(GLOBAL_STRING_OBJECT.pos + GLOBAL_STRING_OBJECT.str.length);
+		//var pppp	= document.getElementById(target);
+		o.value	= previewStr;
+		//pppp.value	= previewStr;
+		o.focus();
+	}
+
+	function DoSelect(obj) {
+		var o = SelectString(obj);
+		DumpString(o);
+	//	CreateEditor('helper',o.str,obj);
+	}
+
+	function AddLink(obj) {
+		var o = document.getElementById('id_link_editor');
+		var strLink	= o.value;
+		FreshPreview(strLink,obj);
+	}
+
+	function BindEvent(obj) {
+		this.fire = function() {
+			AddLink(obj);
+		}
+	}
+
+	function CreateEditor(id_parent,str,obj) {
+		var c	= document.createElement('div');
+		var objEditorInput	= document.createElement('input');
+		objEditorInput.setAttribute('type', 'text');
+		objEditorInput.setAttribute('id', 'id_link_editor');
+		objEditorInput.setAttribute('name', 'editor_input');
+		objEditorInput.setAttribute('value', str);
+		objEditorInput.setAttribute('style', 'width:300px; height:20px;');
+		var objButton	= document.createElement('input');
+		objButton.setAttribute('type', 'button');
+		objButton.setAttribute('value', 'Save');
+
+		var newFunc = new BindEvent(obj);
+
+		if (document.attachEvent) {
+		//	objButton.attachEvent('onclick', AddLink);
+			objButton.attachEvent('onclick', newFunc.fire);
+		} else {
+			// FF
+		//	objButton.addEventListener('click', AddLink, true);
+			objButton.addEventListener('click', newFunc.fire, true);
+		}
+
+		c.appendChild(objEditorInput);
+		c.appendChild(objButton);
+		var p		= document.getElementById(id_parent);
+		setTimeout(
+			function() {
+				p.innerHTML	= '';
+			}, 50
+		);
+
+		setTimeout(
+			function() {
+				p.appendChild(c);
+			}, 50
+		);
+	}
+
+	// For IE, Opera
+	function GetStringPosition(textAreaObject) {
+		textAreaObject.focus();
+		if ('undefined' != typeof textAreaObject.selectionStart && 'undefined' != typeof textAreaObject.selectionEnd) {
+			var intPosOfNeedle	= textAreaObject.selectionStart;
+			var intEndOfNeedle	= textAreaObject.selectionEnd;
+			var strRange		= textAreaObject.value.substring(intPosOfNeedle, intEndOfNeedle);
+			return {pos:intPosOfNeedle, len:strRange.length, str:strRange};
+		}
+
+		return	GetIEStringPos(textAreaObject);
+
+
+
+
+
+	//////////////////////////////////////////////
+	// Following is useless
+	//////////////////////////////////////////////
+		var strHaystack		= textAreaObject.value;
+		var intLenOfHaystack	= strHaystack.length;
+		var objRange		= document.selection.createRange();
+	//	var objRange		= document.selection.createRangeCollection();
+	//	var objRange		= textAreaObject.createTextRange();
+	//	var objRange		= textAreaObject.createRange();
+	//	var strRange		= objRange.text;
+
+
+		textBox = textAreaObject;
+
+		var range = document.selection.createRange();
+		if(range.parentElement().id == textBox.id){
+			var range_all = document.body.createTextRange();
+			range_all.moveToElementText(textBox);
+			for (start=0; range_all.compareEndPoints("StartToStart", range) < 0; start++)
+				range_all.moveStart('character', 1);
+			for (var i = 0; i <= start; i++){
+				if (textBox.value.charAt(i) == '\n')
+					start++;
+			}
+
+			var range_all = document.body.createTextRange();
+			range_all.moveToElementText(textBox);
+			for (end = 0; range_all.compareEndPoints('StartToEnd', range) < 0; end ++)
+				range_all.moveStart('character', 1);
+			for (var i = 0; i <= end; i ++){
+				if (textBox.value.charAt(i) == '\n')
+					end++;
+			}
+
+
+
+		}
+
+	//	alert("start: " + start + "\nend: " + end);
+
+
+	//	objRange.moveEnd("character", intLenOfHaystack);
+	//	alert("[" + objRange.text + "]");
+
+
+
+
+
+	//	alert("[" + objRange.text + "]");
+	//	objRange.moveEnd("character", intLenOfHaystack);
+	//	objRange.moveEnd("character", 12);
+	//	objRange.moveStart("character", intLenOfHaystack);
+	//	objRange.moveEnd("textedit", intLenOfHaystack);
+
+	//	alert('Range:' + intLenOfHaystack);
+		var intLenOfPartial	= objRange.text.length;
+	//	alert("[" + objRange.text + "]");
+	//	alert("[" + objRange.htmlText + "]");
+
+		var strFuckingIEHtmlText	= '';
+
+
+		// Opera is likely to work in IE mode.
+		// The fucking IE will add a space to the end of the needle string!!!
+		// One <textarea>, one space!!!
+		// Killing IE begin
+		var strTestHaystack	= strHaystack + ' ';
+		var intIntPosOfNeedle	= strTestHaystack.length - intLenOfPartial;
+		var boolIsFuckingIE	= false;
+		if (strTestHaystack.substr(intIntPosOfNeedle) == objRange.text) {
+			// This approve that your browser is the fucking IE!!!
+			boolIsFuckingIE	= true;
+			intLenOfPartial--;
+		//	alert('IE');
+		}
+		// Killing IE end
+
+		var intPosOfNeedle	= intLenOfHaystack - intLenOfPartial;
+	//	alert(intPosOfNeedle);
+
+		return {pos:intPosOfNeedle, len:strRange.length, str:strRange};
+	}
+
+
+
+function GetIEStringPos(ObjTextArea) {
+
+	var range	= document.selection.createRange();
+	var strSelected	= range.text;
+	var start, end;
+
+	if (range.parentElement().id == ObjTextArea.id) {
+
+		var range_all	= document.body.createTextRange();
+		range_all.moveToElementText(ObjTextArea);
+		for (start = 0; range_all.compareEndPoints("StartToStart", range) < 0; start++) {
+			range_all.moveStart('character', 1);
+		}
+		for (var i = 0; i <= start; i++){
+			if (ObjTextArea.value.charAt(i) == "\n") {
+				start++;
+			}
+		}
+
+
+		var range_all	= document.body.createTextRange();
+		range_all.moveToElementText(ObjTextArea);
+		for (end = 0; range_all.compareEndPoints('StartToEnd', range) < 0; end++) {
+			range_all.moveStart('character', 1);
+		}
+		for (var i = 0; i <= end; i++){
+			if (ObjTextArea.value.charAt(i) == "\n") {
+				end++;
+			}
+		}
+
+	}
+
+	return {pos:start, len:strSelected.length, str:strSelected};
+
+}
+
+
+function getPos(obj){
+
+	obj.focus();
+	ml=obj.value.length;
+
+/*
+	var vv	= obj.value;
+	vv.replace(/\r\n/ig, '');
+//	vv.replace(/\n/ig, '');
+	ml=vv.length;
+*/
+
+
+//	alert(ml);
+	l=0;
+	rng=document.selection.createRange();
+	rng.moveEnd("character",ml);
+
+//	alert(rng.text);
+
+	try{
+		l=ml-rng.htmlText.match(/>((.|\n)+?)<\/textarea>/i)[1].length
+	}catch(e){}
+
+//	alert(l)
+
+	return	l;
+}
+
+var start=0;
+    var end=0;
+    function add(){
+        var textBox = document.getElementById("ta");
+        var pre = textBox.value.substr(0, start);
+        var post = textBox.value.substr(end);
+        textBox.value = pre + document.getElementById("inputtext").value + post;
+    }
+    function savePos(textBox){
+        //如果是Firefox(1.5)的话，方法很简单
+        if(typeof(textBox.selectionStart) == "number"){
+            start = textBox.selectionStart;
+            end = textBox.selectionEnd;
+        }
+        //下面是IE(6.0)的方法，麻烦得很，还要计算上'\n'
+        else if(document.selection){
+            var range = document.selection.createRange();
+            if(range.parentElement().id == textBox.id){
+                // create a selection of the whole textarea
+                var range_all = document.body.createTextRange();
+                range_all.moveToElementText(textBox);
+                //两个range，一个是已经选择的text(range)，一个是整个textarea(range_all)
+                //range_all.compareEndPoints()比较两个端点，如果range_all比range更往左(further to the left)，则                //返回小于0的值，则range_all往右移一点，直到两个range的start相同。
+                // calculate selection start point by moving beginning of range_all to beginning of range
+                for (start=0; range_all.compareEndPoints("StartToStart", range) < 0; start++)
+                    range_all.moveStart('character', 1);
+                // get number of line breaks from textarea start to selection start and add them to start
+                // 计算一下\n
+                for (var i = 0; i <= start; i ++){
+                    if (textBox.value.charAt(i) == '\n')
+                        start++;
+                }
+                // create a selection of the whole textarea
+                 var range_all = document.body.createTextRange();
+                 range_all.moveToElementText(textBox);
+                 // calculate selection end point by moving beginning of range_all to end of range
+                 for (end = 0; range_all.compareEndPoints('StartToEnd', range) < 0; end ++)
+                     range_all.moveStart('character', 1);
+                     // get number of line breaks from textarea start to selection end and add them to end
+                     for (var i = 0; i <= end; i ++){
+                         if (textBox.value.charAt(i) == '\n')
+                             end ++;
+                     }
+                }
+            }
+        document.getElementById("start").value = start;
+        document.getElementById("end").value = end;
+    }
+
+
+
+
+	</script>
+ </body>
+</html>

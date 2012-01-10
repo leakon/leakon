@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Select Range</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+
+<style type="text/css">
+body	{margin:8px; padding:0;}
+*	{font-family:Verdana; font-size:12px;}
+</style>
+
+<script type="text/javascript">
+
+var GLOBAL_STRING_OBJECT	= {pos:0, len:0, str: ''};
+
+function DumpString(o) {
+	var str = '';
+	str	+= "pos: " + o.pos + "\n";
+	str	+= "len: " + o.len + "\n";
+	str	+= "str: " + o.str + "";
+	alert(str);
+}
+
+
+
+function SelectString() {
+	var o	= document.getElementById('id_desktop');
+	return	GLOBAL_STRING_OBJECT = GetStringPosition(o);
+}
+
+function FreshPreview(slink) {
+
+	var o		= document.getElementById('id_desktop');
+
+	var previewStr	= '';
+	previewStr	+= o.value.substring(0, GLOBAL_STRING_OBJECT.pos);
+
+	DumpString(GLOBAL_STRING_OBJECT);
+//	alert(previewStr);
+
+
+	previewStr	+= '<a href="' + slink + '" target="_blank">' + GLOBAL_STRING_OBJECT.str + '</a>';
+	previewStr	+= o.value.substr(GLOBAL_STRING_OBJECT.pos + GLOBAL_STRING_OBJECT.str.length);
+
+	var pppp	= document.getElementById('id_preview');
+
+	o.value	= previewStr;
+	pppp.value	= previewStr;
+
+	o.focus();
+}
+
+
+function DoSelect() {
+	var obj	= SelectString();
+//	DumpString(obj);
+	CreateEditor('helper', obj.str);
+}
+
+
+function AddLink() {
+	var o		= document.getElementById('id_link_editor');
+	var strLink	= o.value;
+	FreshPreview(strLink);
+}
+
+function CreateEditor(id_parent, str) {
+
+	var c	= document.createElement('div');
+
+	var objEditorInput	= document.createElement('input');
+	objEditorInput.setAttribute('type', 'text');
+	objEditorInput.setAttribute('id', 'id_link_editor');
+	objEditorInput.setAttribute('name', 'editor_input');
+	objEditorInput.setAttribute('value', str);
+	objEditorInput.setAttribute('style', 'width:300px; height:20px;');
+
+	var objButton	= document.createElement('input');
+	objButton.setAttribute('type', 'button');
+	objButton.setAttribute('value', 'Save');
+
+	if (document.attachEvent) {
+		objButton.attachEvent('onclick', AddLink);
+	} else {
+		// FF
+		objButton.addEventListener('click', AddLink, true);
+	}
+
+	c.appendChild(objEditorInput);
+	c.appendChild(objButton);
+
+	var p		= document.getElementById(id_parent);
+
+
+	setTimeout(
+		function() {
+			p.innerHTML	= '';
+		}, 50
+	);
+
+	setTimeout(
+		function() {
+			p.appendChild(c);
+		}, 50
+	);
+
+}
+
+
+// For IE, Opera
+function GetStringPosition(textAreaObject) {
+	textAreaObject.focus();
+	if ('undefined' != typeof textAreaObject.selectionStart && 'undefined' != typeof textAreaObject.selectionEnd) {
+		var intPosOfNeedle	= textAreaObject.selectionStart;
+		var intEndOfNeedle	= textAreaObject.selectionEnd;
+		var strRange		= textAreaObject.value.substring(intPosOfNeedle, intEndOfNeedle);
+		return {pos:intPosOfNeedle, len:strRange.length, str:strRange};
+	}
+
+	return	GetIEStringPos(textAreaObject);
+}
+
+
+function GetStringPositionOLD(textAreaObject) {
+
+	textAreaObject.focus();
+
+	if ('undefined' != typeof textAreaObject.selectionStart && 'undefined' != typeof textAreaObject.selectionEnd) {
+		var intPosOfNeedle	= textAreaObject.selectionStart;
+		var intEndOfNeedle	= textAreaObject.selectionEnd;
+		var strRange		= textAreaObject.value.substring(intPosOfNeedle, intEndOfNeedle);
+		return {pos:intPosOfNeedle, len:strRange.length, str:strRange};
+	}
+
+	var strHaystack		= textAreaObject.value;
+	var intLenOfHaystack	= strHaystack.length;
+
+
+	var objRange		= document.selection.createRange();
+	var strRange		= objRange.text;
+	objRange.moveEnd("character", intLenOfHaystack);
+
+	var intLenOfPartial	= objRange.text.length;
+	alert("[" + objRange.text + "]");
+
+
+	// Opera is likely to work in IE mode.
+	// The fucking IE will add a space to the end of the needle string!!!
+	// One <textarea>, one space!!!
+	// Killing IE begin
+	var strTestHaystack	= strHaystack + ' ';
+	var intIntPosOfNeedle	= strTestHaystack.length - intLenOfPartial;
+	var boolIsFuckingIE	= false;
+	if (strTestHaystack.substr(intIntPosOfNeedle) == objRange.text) {
+		// This approve that your browser is the fucking IE!!!
+		boolIsFuckingIE	= true;
+		intLenOfPartial--;
+		alert('IE');
+	}
+	// Killing IE end
+
+	var intPosOfNeedle	= intLenOfHaystack - intLenOfPartial;
+	alert(intPosOfNeedle);
+
+	return {pos:intPosOfNeedle, len:strRange.length, str:strRange};
+
+}
+
+function GetIEStringPos(ObjTextArea) {
+
+	var range	= document.selection.createRange();
+	var strSelected	= range.text;
+	var start, end;
+
+	if (range.parentElement().id == ObjTextArea.id) {
+
+		var range_all	= document.body.createTextRange();
+		range_all.moveToElementText(ObjTextArea);
+		for (start = 0; range_all.compareEndPoints("StartToStart", range) < 0; start++) {
+			range_all.moveStart('character', 1);
+		}
+		for (var i = 0; i <= start; i++){
+			if (ObjTextArea.value.charAt(i) == "\n") {
+				start++;
+			}
+		}
+
+
+		var range_all	= document.body.createTextRange();
+		range_all.moveToElementText(ObjTextArea);
+		for (end = 0; range_all.compareEndPoints('StartToEnd', range) < 0; end++) {
+			range_all.moveStart('character', 1);
+		}
+		for (var i = 0; i <= end; i++){
+			if (ObjTextArea.value.charAt(i) == "\n") {
+				end++;
+			}
+		}
+
+	}
+
+	return {pos:start, len:strSelected.length, str:strSelected};
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<input type="button" value="Select" onclick="DoSelect()" />
+
+<br />
+
+<div id="helper">
+
+</div>
+
+
+<textarea id="id_desktop" style="width:400px; height:400px;">
+abcdefghijklmnopqrstuvwxyz
+abcdefghijklmnopqrstuvwxyz
+abcdefghijklmnopqrstuvwxyz
+abcdefghijklmnopqrstuvwxyz
+121212121212121212121212121
+121212121212121212121212121</textarea>
+
+
+
+<?php if (1) : ?>
+<textarea id="id_preview" style="width:400px; height:400px;"></textarea>
+<?php endif ?>
+<?php if (1) : ?>
+<textarea id="id_preview2" style="width:400px; height:400px;"></textarea>
+<?php endif ?>
+
+</body>
+</html>

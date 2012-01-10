@@ -1,0 +1,55 @@
+<html>
+<head>
+
+<title>Tab Div</title>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+
+<style type="text/css">
+
+div	{width: 200px; height: 200px; border: 1px solid black; margin: 4px; padding: 4px;}
+span	{border: 1px solid red; cursor: pointer;}
+
+</style>
+
+<script type="text/javascript">
+
+function show(num) {
+	for (var i = 1; i <= 3; i++) {
+		var obj = document.getElementById('cont_' + i);
+		if (num == i) {
+			obj.style.display = 'block';
+		} else {
+			obj.style.display = 'none';
+		}
+	}
+}
+
+</script>
+
+</head>
+
+<body>
+
+<input type="button" value="Content A" onclick="show('1')" />
+<input type="button" value="Content B" onclick="show('2')" />
+<input type="button" value="Content C" onclick="show('3')" />
+
+<br >
+
+<span onmouseover="show('1')">Content A</span>
+<span onmouseover="show('2')">Content B</span>
+<span onmouseover="show('3')">Content C</span>
+
+
+<div id="cont_1" style="display:;">
+	Hello
+</div>
+<div id="cont_2" style="display:none;">
+	你好
+</div>
+<div id="cont_3" style="display:none;">
+	123456
+</div>
+
+</body>
+</html>

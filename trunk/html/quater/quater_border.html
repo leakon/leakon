@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>CSS 圆角</title>
+<meta http-equiv="content-type" content="text/html; charset=GBK">
+
+<style type="text/css">
+
+div.RoundedCorner	{background: #9BD1FA;}
+
+b.rtop, b.rbottom	{display:block; background: #FFF;}
+
+b.rtop b,
+b.rbottom b		{display:block; height:1px; overflow:hidden; background:#9BD1FA;}
+
+
+/*
+b.r1			{margin:0 5px;}
+b.r2			{margin:0 3px;}
+b.r3			{margin:0 2px;}
+b.rtop b.r4,
+b.rbottom b.r4		{margin:0 1px; height:2px;}
+
+b.r1,
+b.r2,
+b.r3,
+b.rtop b.r4,
+b.rbottom b.r4		{border:2px solid red; border-top:0; border-bottom:0;}
+*/
+
+
+b.rtop b.r1,
+b.rtop b.r2,
+b.rtop b.r3,
+b.rtop b.r4,
+b.rtop b.r5,
+b.rtop b.r6,
+b.rtop b.r7,
+b.rtop b.r8		{
+				border-width:2px; border-top:0; border-bottom:0;
+				background:#FFF; height:2px; border-style:solid; border-color:red;
+				padding:0;
+			}
+
+
+
+b.rtop b.r1		{margin:10px; border:0; border-bottom:2px solid red; height:1px;}
+b.rtop b.r2		{margin:8px; border:0; border-left:2px solid red; border-right:3px solid red; height:2px;}
+b.rtop b.r3		{margin:7px; border:0; border-left:2px solid red; border-right:3px solid red; height:2px;}
+b.rtop b.r4		{margin:5px; border:0; border-left:2px solid red; border-right:3px solid red; height:2px;}
+b.rtop b.r5		{margin:4px; border:0; border-left:2px solid red; border-right:3px solid red; height:2px;}
+b.rtop b.r6		{margin:3px; border:0; border-left:2px solid red; border-right:3px solid red; height:2px;}
+b.rtop b.r7		{margin:2px; border:0; border-left:2px solid red; border-right:2px solid red; height:2px;}
+b.rtop b.r8		{margin:1px; border:0; border-left:2px solid red; border-right:2px solid red; height:6px;}
+
+
+
+b.rtop b.r1,
+b.rtop b.r2,
+b.rtop b.r3,
+b.rtop b.r4,
+b.rtop b.r5,
+b.rtop b.r6,
+b.rtop b.r7,
+b.rtop b.r8		{
+				margin-top:0; margin-bottom:0;
+			}
+
+
+
+
+
+
+</style>
+
+</head>
+
+<body>
+
+<div class="RoundedCorner">
+
+	<b class="rtop">
+		<b class="r1"></b>
+		<b class="r2"></b>
+		<b class="r3"></b>
+		<b class="r4"></b>
+		<b class="r5"></b>
+		<b class="r6"></b>
+		<b class="r7"></b>
+		<b class="r8"></b>
+	</b>
+
+
+	<p style="margin:20px;">无图片实现圆角框</p>
+
+
+	<b class="rbottom">
+		<b class="r4"></b>
+		<b class="r3"></b>
+		<b class="r2"></b>
+		<b class="r1"></b>
+	</b>
+
+
+</div>
+</body>
+</html>

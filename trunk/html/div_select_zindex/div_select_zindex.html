@@ -1,0 +1,125 @@
+<?php
+
+header("Content-Type: text/html; charset=UTF-8");
+
+function GenOptions($arrOptions = null, $opt = null) {
+
+	$arrDefault	= array(
+		1	=> '111111111',
+		2	=> '222222222',
+		3	=> '333333333',
+
+	);
+
+	$selectId	= '';
+	if (isset($opt['id'])) {
+		$selectId	= ' id="'.$opt['id'].'" ';
+	}
+
+	if (empty($arrOptions)) {
+		$arrOptions	= $arrDefault;
+	}
+
+	$arrHtml	= array();
+
+	foreach ($arrOptions as $key => $string) {
+		$arrHtml[]	= sprintf('<option value="%d">%s</option>', $key, $string);
+	}
+
+	return	'<select class="inputOption_group" '.$selectId.'>' . implode("\n", $arrHtml) . '</select>';
+
+}
+
+
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>div_select_zindex</title>
+
+<style type="text/css">
+
+body	{}
+
+div.cBox	{border:1px solid black; background:#cccccc; position:absolute; top:60px; left:5px; width:200px; height:200px; }
+
+.Iframe	{position:absolute; top:60px; left:5px; width:200px; height:200px; }
+
+</style>
+
+
+<script type="text/javascript">
+
+
+function createBox() {
+
+
+	var box	= document.createElement('div');
+
+	box.className = 'cBox';
+
+	document.body.appendChild(box);
+
+
+}
+
+function createIframe() {
+
+
+	var box	= document.createElement('iframe');
+
+	box.className = 'Iframe';
+	box.src = '';
+//	box.allowTransparency = 'true';
+
+	document.body.appendChild(box);
+
+}
+
+
+function both() {
+
+	createIframe();
+	createBox();
+
+}
+
+</script>
+
+
+</head>
+
+<body>
+
+<p>
+<input type="button" onclick="createBox()" value="Test" />
+<input type="button" onclick="createIframe()" value="Ifrmae" />
+
+<input type="button" onclick="both()" value="Both" />
+</p>
+
+其实也可以加入z-index属性，不过只要按照先 Iframe 后 div 的顺序，就不会有问题。
+
+最好只在IE6下进行这样的hack，其他浏览器不要加入Iframe。
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<div>
+
+	<p>
+
+		<?php echo GenOptions() ?>
+
+
+
+	</p>
+
+</div>
+
+
+</body>
+</html>

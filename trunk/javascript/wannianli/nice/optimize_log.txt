@@ -1,0 +1,8 @@
+序号		浏览器		年数		用时1		用时2		用时3		修改项
+1		Firefox3	2		7.346		8.102		8.102		无
+2		Firefox3	2		6.793		6.801		6.802		增加 _cache.lunar_day 缓存
+3		Firefox3	2		6.853		6.817		6.787		增加 _initialize()，对某一年的基础数据做缓存。
+4		Firefox3	2		0.863		0.861		0.897		增加 _getLunarMonth() 计算年份有效总月数的缓存。
+5		Firefox3	2		0.746		0.738		0.727		增加 _prepareLunarDay()，避免循环内重复计算。
+6		Firefox3	2		0.569		0.559		0.582		增加 _arrDayOfMonth，避免每次初始化每月天数
+7		Firefox3	2		0.454		0.454		0.454		_getDayDiff() 增加 2 级缓存

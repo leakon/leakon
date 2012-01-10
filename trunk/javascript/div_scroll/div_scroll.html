@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>div_scroll</title>
+<style>
+body, a {font-size:12px;}
+</style>
+</head>
+
+<body>
+<div id="t1" style="height:23px;overflow:hidden;">
+<table>
+<tr>
+<td height=21><a href="#">1 女性最易献身时刻</a></td>
+</tr>
+<tr>
+<td height=21><a href="#">2 哈利·波特卷土重来</a></td>
+</tr>
+<tr>
+<td height=21><a href="#">3 考研报考最理想高校</a></td>
+</tr>
+<tr>
+<td height=21><a href="#">4 闪亮新主播北京选拔</a></td>
+</tr>
+<tr>
+<td height=21><a href="#">5 女大学生请教性问题</a></td>
+</tr>
+<tr>
+<td height=21><a href="#">6 手绘美女异样性感</a></td>
+</tr>
+<tr>
+<td height=21><a href="#">7 S.H.E真命天女签唱会</a></td>
+</tr>
+<tr>
+<td height=21><a href="#">8 一个二奶的心路历程 </a></td>
+</tr>
+<tr>
+<td height=21><a href="#">9 梦见鬼象征什么</a></td>
+</tr>
+<tr>
+<td height=21><a href="#">10 刘德华口快泄露婚姻状况</a></td>
+</tr>
+<tr>
+<td height=21><a href="#">1 女性最易献身时刻</a></td>
+</tr>
+</table>
+</div>
+
+<script>
+
+
+
+function rand(a,b) {
+	var r	= Math.random();
+	var d	= b-a+1;
+	var n	= Math.ceil(a+d*r-1);
+	return n;
+}
+
+function _ge(a) {return document.getElementById?document.getElementById(a):null;}
+
+var t		= _ge("t1");
+
+with(t){
+	style.width	= '300px';
+	style.border	= '1px solid #666';
+	style.height	= '24px';
+	noWrap		= true;
+	style.overflowX	= 'hidden';
+	style.overflowY	= 'hidden';
+	onmouseover	= function() { aa.stop(true); }
+	onmouseout	= function() { aa.stop(false); }
+}
+
+//var m_pos= 0;
+
+function b() {
+
+	m_pos	= t.scrollTop;
+
+	if ( m_pos % 23 == 0 && stopTimes < m_delayTime && t.scrollTop < 23*4 ) {
+		stopTimes++;
+	} else {
+		t.scrollTop++;
+		if ( m_pos % 23 == 0 && stopTimes >= m_delayTime ) {
+			stopTimes	= 0;
+		}
+	}
+
+
+	if (t.scrollTop > 23*4) {
+		t.scrollTop	= 0;
+	}
+
+}
+
+
+//setInterval( "b()", 5 );
+
+
+function VScroll() {
+
+	var m_box	= null;
+	var m_lineHeight	= 0;
+	var m_lineNum	= 0;
+	var m_splitStr	= '';
+	var m_speed	= 0;
+	var m_delay	= 0;
+
+	var m_pos	= 0;
+	var m_stopTimes	= 0;
+	var m_stop	= false;
+
+	this.init	= function(box,lnum,lheight,speed,delay,split) {
+		m_box		= _ge(box);
+		m_lineNum	= lnum;
+		m_lineHeight	= lheight;
+		m_speed		= speed;
+		m_delay		= delay;
+		m_splitStr		= split;
+	}
+
+	this.play	= function() {
+
+		if ( m_stop ) {
+			return;
+		}
+
+		m_pos	= m_box.scrollTop;
+		if( m_pos % m_lineHeight == 0 && m_stopTimes < m_delay && m_box.scrollTop < m_lineHeight * m_lineNum ) {
+			m_stopTimes++;
+		} else {
+			m_box.scrollTop++;
+			if ( m_pos % m_lineHeight == 0 && m_stopTimes >= m_delay ) {
+				m_stopTimes	= 0;
+			}
+		}
+		if ( m_box.scrollTop > m_lineHeight * m_lineNum ) {
+			m_box.scrollTop	= 0;
+		}
+	}
+
+	this.show	= function () {
+		setInterval( m_self + ".play()", m_speed );
+	}
+	this.setSelf = function(n) {
+		m_self	= n;
+	}
+	this.stop = function(n) {
+		m_stop	= n;
+	}
+
+}
+
+var aa = new VScroll();
+aa.init("t1",10,23,1,100,'');
+aa.setSelf("aa");
+aa.show();
+
+
+
+
+
+</script>
+
+</body>
+</html>

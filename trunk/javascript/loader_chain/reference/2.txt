@@ -1,0 +1,65 @@
+用 Javascript 动态加载一个 CSS 文件的方法很简单，但是如果想要加载一个 CSS STYLE 元素，里面写入一些 CSS 语句就没有那么简单了。不过也难不倒我们，查一查 MSDN 和 Mozilla 的开发网站就可以写出来了，下面的语句兼容了 IE,Firefox,Safari，Opera 没有测试。
+
+function AttachStyle(ownDoc,styCss) {     var elmSty = ownDoc.createElement('STYLE');     elmSty.setAttribute("type", "text/css");     if (elmSty.styleSheet) {         elmSty.styleSheet.cssText=styCss;      } else {          elmSty.appendChild(ownDoc.createTextNode(styCss));      }     ownDoc.getElementsByTagName("head")[0].appendChild(elmSty); } 标签：Javascript，动态加载，Firefox，Internet Explorer，Safari
+
+引用通告：http://www.loveyuki.comArticle/45/Trackback.ashx
+评论订阅：http://www.loveyuki.comArticle/45/Feeds.ashx
+ RainBlog 2008-01-31 22:43 #
+这种写法不科学,你认为OO么?而且很不灵活,不适合Ajax异步转载!轻微鄙视一下!
+
+最好使用CSS外部导入法加载!
+
+function AttachStyle(){
+ RainBlog 2008-01-31 22:44 #
+
+function AttachStyle(){
+this.load=function(URL) {
+    var css=document.createElement('link');
+    css.type="text/css";
+    css.rel="="stylesheet";
+    css.src=URL;
+    var head=document.getElementsByTagName("head")[0];
+    head.appendChild(css);
+    var self=this;
+
+   css.onload=css.onreadystatechange=function(){
+   if(this.readyState&&this.readyState=="loading") return;
+   self.onsuccess();
+   }
+   css.onerror=function(){
+   head.removeChild();
+   self.onfailure();
+   }
+}
+this.onsuccess=function(){}//加载成功事件
+this.onfailure=function(){}//加载失败事件
+}
+
+ RainBlog 2008-01-31 22:46 #
+以上方法适合任何外部导入script link等等
+
+ RainBlog 2008-01-31 22:52 #
+css.rel="stylesheet"; //貌似 30分钟内修改评论不能用?
+
+
+ Loveyuki 2008-01-31 23:09 #
+css.rel="stylesheet"; //貌似 30分钟内修改评论不能用?
+
+暂时不能用的。呵呵。解释型的语言不要太 OO。银蛋是不存在的。
+
+
+ RainBlog 2008-02-01 14:15 #
+解释型的语言不要太 OO??ajax里面javascript不仅仅再是添加表单验证或网页特效的脚本语言了,它已经被工程化了!
+
+ slleo 2008-02-01 15:30 #
+loveyuki重新开张了，贺一下。
+
+先报告一个小BUG：http://www.loveyuki.comArticle/45/Feeds.ashx路径中少了一个/，所有的页面里的“引用通告”和“评论订阅”基本上都少这个，路径错了。
+
+ 汤尼尔 2008-02-01 19:53 #
+css.src = ""; 最好用
+
+另：预祝老哥春节快乐。
+
+ Crazy 2008-02-03 16:50 #
+应该考虑用现成的js框架了，现在有那么多好的框架

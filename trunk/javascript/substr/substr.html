@@ -1,0 +1,218 @@
+<html>
+<head>
+
+<title>SubString</title>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+
+<style type="text/css">
+
+</style>
+
+
+</head>
+
+<body>
+
+<p>
+设置：
+<input type="text" name="input_len" id="input_len" value="5" style="" /> 个字节
+</p>
+
+<p>
+测试：
+<input type="text" name="input_text" id="input_text" value="一二三四12345678一二三四" style="height:40px; width:400px; padding:4px;" />
+</p>
+
+<p>
+省略：
+<input type="text" name="input_dot" id="input_dot" value="" style="height:40px; width:400px; padding:4px;" />
+</p>
+
+<p>
+<input type="button" value="恢复" onclick="Restore()" />
+<input type="button" value="截取" onclick="SubString()" />
+</p>
+
+<script type="text/javascript">
+
+function SubString() {
+
+	var intLen	= document.getElementById('input_len').value;
+	var objText	= document.getElementById('input_text');
+	var objDot	= document.getElementById('input_dot');
+
+	var strValue	= objText.value;
+
+	objText.value	= Kx.Lib.String.subStr(strValue, intLen);
+	objDot.value	= Kx.Lib.String.subWidth(strValue, intLen);
+
+}
+
+function Restore() {
+
+	var objText	= document.getElementById('input_text');
+	objText.value	= '一二三四12345678一二三四';
+
+}
+
+Kx		= {};
+Kx.Lib		= {};
+Kx.Lib.String	= {};
+
+/*
+ * 计算字符串长度，汉字按 2 字节计算
+ * @return int
+ */
+Kx.Lib.String.strLen	= function(str) {
+
+	var len = str.length;
+	var total = len;
+	var charCode;
+	for (var i = 0; i < len; i++) {
+		charCode	= str.charCodeAt(i);
+		if (charCode < 0 || charCode > 255) {
+			total++
+		}
+	}
+	return	total;
+}
+
+/*
+ * 截取字符串，返回最长 intLen 个字节的字符串（汉字按 2 字节计算）
+ * @return string
+ */
+Kx.Lib.String.subStr	= function(strText, intLen) {
+
+	intLen	= intLen || 12;
+
+	var len	= Kx.Lib.String.strLen(strText);
+
+	if (len > intLen) {
+
+		var strUpdate	= '';
+		var strOri	= strText;
+
+		var pos		= 0;
+
+		for (var i = 0; i < intLen; i++) {
+
+			if   (strOri.charCodeAt(pos) < 0 || strOri.charCodeAt(pos) > 255) {
+				i++;
+				if (i >= intLen) {
+					// 如果最后是半个汉字：
+					// break：删除该汉字
+					// not break：保留该汉字
+					break;
+				}
+			}
+
+			strUpdate	+= strOri.charAt(pos);
+
+			pos++;
+
+		}
+
+		strText	= strUpdate;
+
+	}
+
+	return	strText;
+}
+
+/*
+ * 截取字符串，如果有截断则补上 strDots 字符，strDots 默认为 "..."
+ * @return string
+ */
+Kx.Lib.String.subWidth	= function(strText, intLen, strDots) {
+
+	intLen	= intLen || 12;
+	strDots	= strDots || '...';
+
+	var strSub	= Kx.Lib.String.subStr(strText, intLen);
+
+	if (strSub == strText) {
+		return	strText;
+	} else {
+		return	strSub + strDots;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+/*
+ * 计算字符串长度，汉字按 2 字节计算
+ * @return int
+ */
+function strLen(str){
+
+	var len = str.length;
+	var total = len;
+	var charCode;
+	for (var i = 0; i < len; i++) {
+		charCode	= str.charCodeAt(i);
+		if (charCode < 0 || charCode > 255) {
+			total++
+		}
+	}
+	return	total;
+}
+
+/*
+ * 限制输入框长度
+ * 添加到输入框的 onkeyup 事件上
+ * @return bool
+ */
+function limitTextLen(objInput, maxLen) {
+
+	var bool	= true;
+
+	maxLen	= maxLen || 12;
+
+	var len	= strLen(objInput.value);
+
+	if (len > maxLen) {
+
+		var strUpdate	= '';
+		var strOri	= objInput.value;
+
+		var pos		= 0;
+
+		for (var i = 0; i < maxLen; i++) {
+
+			if   (strOri.charCodeAt(pos) < 0 || strOri.charCodeAt(pos) > 255) {
+				i++;
+				if (i >= maxLen) {
+					// 如果最后是半个汉字：
+					// break：删除该汉字
+					// not break：保留该汉字
+					break;
+				}
+			}
+
+			strUpdate	+= strOri.charAt(pos);
+
+			pos++;
+
+		}
+
+		objInput.value	= strUpdate;
+
+		bool	= false;
+
+	}
+
+	return	bool;
+
+}
+
+</script>
+
+</body>
+</html>

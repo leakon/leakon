@@ -1,0 +1,480 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+	<title>Using MooTools 1.2 For Drag, Drop, Sort, Save Example</title>
+	<meta name="description" content="">
+	<style type="text/css">
+	body	{ background:#fff; font-family:arial; font-size:12px; }
+	#content	{ padding:0; }
+	.exhead	{ padding:5px 5px 5px 10px; margin:20px 0; border-top:1px solid #ccc; border-bottom:1px solid #ccc; background:#eee; }
+	.content	{ padding:0 40px; min-height:300px; } * html #content { height:300px; }
+	#content-left	{ min-height:300px; }
+	h1 { margin-bottom:20px; }
+
+	/* global */
+	* 								{ margin:0; padding:0; } html { overflow-y:scroll; }
+
+	/*	layout */
+	#wrap							{  }
+	#top-logo					{ position:absolute; top:5px; left:20px; z-index:10; }
+	#header						{ min-height:120px; background:#eee; padding:5px 0 0 220px; border-top:1px solid #ccc; border-bottom:1px solid #ccc; margin:20px 0 0 0; font-family:Cambria,Georgia,Palatino,"Palatino Linotype",Myriad Pro,Serif; } * html #header { height:120px; }
+		#header1					{ font-size:48px; font-weight:normal; }
+		#header2					{ color:#999; font-size:20px; line-height:26px; }
+	#content						{ min-height:400px; background:#fff; } * html #content { height:400px; }
+			#top-sponsors a	{ color:#e95e25; padding:0 5px; }
+
+	/* tags */
+	blockquote					{ background:#eceff5; border-left:3px solid #3b5998; color:#3b5998; padding:10px; margin:0 40px 19px 40px; line-height:21px; }
+		blockquote:last-child	{ padding-bottom:0; margin-bottom:0; }
+	h1								{ font-size:28px; font-weight:normal; margin:0; font-family:Cambria,Georgia,Palatino,"Palatino Linotype",Myriad Pro,Serif; }
+	h2								{ font-size:18px; font-weight:normal; padding:0 0 3px 0; font-family:Cambria,Georgia,Palatino,"Palatino Linotype",Myriad Pro,Serif; }
+	h3								{  }
+	h4								{ margin:0 0 3px 0; }
+	h5								{ margin:0 0 20px 0; }
+	h4,h5							{ background:#6d84b4; color:#fff; padding:5px; font-size:14px; }
+	h6								{ font-size:12px; font-weight:bold; font-family:tahoma,arial; }
+	img							{ display:block; }
+	label,select,input[type='submit'],.point { cursor:pointer; }
+	li								{ line-height:21px; margin:5px 0 0 0; }
+	ol, ul						{  }
+	p								{ line-height:21px; padding:0 0 5px 0; margin:0 0 14px 0; }
+	textarea,input				{ font:12px tahoma, arial, helvetica, sans-serif; padding:5px; border:1px solid #ccc; background:#eee; }
+	textarea:focus,input:focus { border-color:#3b5998; background:#eceff5; }
+
+	/* links */
+	a								{ color:#3b5998; }
+	a:link, a:visited			{ text-decoration:underline; }
+	a:hover, a:active			{ text-decoration:none; }
+	a img							{ border:0; }
+</style>
+	<style type="text/css">
+		#sortable-list				{ padding:0; }
+		li.sortme 		 			{ padding:4px 8px; color:#000; cursor:move; list-style:none; width:500px; background:#ddd; margin:10px 0; border:1px solid #999; }
+		#message-box				{ background:#fffea1; border:2px solid #fc0; padding:4px 8px; margin:0 0 14px 0; width:500px; }
+	</style>
+	<script type="text/javascript" src="moo1.js"></script>
+	<script type="text/javascript">
+	/* when the DOM is ready */
+	window.addEvent('domready', function() {
+		/* create sortables */
+		var sb = new Sortables('sortable-list', {
+			/* set options */
+			clone:true,
+			revert: true,
+			/* initialization stuff here */
+			initialize: function() {
+
+			},
+			/* once an item is selected */
+			onStart: function(el) {
+				el.setStyle('background','#add8e6');
+			},
+			/* when a drag is complete */
+			onComplete: function(el) {
+				el.setStyle('background','#ddd');
+				//build a string of the order
+				var sort_order = '';
+				$$('#sortable-list li').each(function(li) { sort_order = sort_order +  li.get('alt')  + '|'; });
+				$('sort_order').value = sort_order;
+
+				//autosubmit if the checkbox says to
+				if($('auto_submit').checked) {
+					//do an ajax request
+					var req = new Request({
+						url:'/dw-content/sort-save.php',
+						method:'post',
+						autoCancel:true,
+						data:'sort_order=' + sort_order + '&ajax=' + $('auto_submit').checked + '&do_submit=1&byajax=1',
+						onRequest: function() {
+							$('message-box').set('text','Updating the sort order in the database.');
+						},
+						onSuccess: function() {
+							$('message-box').set('text','Database has been updated.');
+						}
+					}).send();
+				}
+			}
+		});
+	});
+
+	</script>
+<style type="text/css">/**
+ * Highlight style classes
+ * .a background color
+ * .b underline
+ * .c underline + font color
+ */
+
+@media screen{
+em.diigoHighlight {
+	text-align:inherit;
+	text-decoration: inherit;
+	line-height:inherit;
+	font:inherit;
+	color:inherit;
+	display:inline;
+}
+
+em.diigoHighlight.a {
+	background-color: #FF9;
+}
+
+em.diigoHighlight.b, em.diigoHighlight.c {
+	border-bottom: solid 2px #FF9;
+}
+
+em.diigoHighlight.c {
+	color: #000099;
+}
+
+/*with private inline comments*/
+em.diigoHighlight.a.commented {
+	background-color: #ABD5FF;
+}
+
+em.diigoHighlight.b.commented, em.diigoHighlight.c.commented {
+	border-bottom-color: #ABD5FF;
+}
+
+/*shared to group*/
+em.diigoHighlight.a.group.commented {
+	background-color: #FFC4D8;
+}
+
+em.diigoHighlight.b.group.commented, em.diigoHighlight.c.group.commented {
+	border-bottom-color: #FFC4D8;
+}
+
+/*with public inline comments*/
+em.diigoHighlight.a.public.commented {
+	background-color: #B2E57E;
+}
+
+em.diigoHighlight.b.public.commented, em.diigoHighlight.c.public.commented {
+	border-bottom-color: #B2E57E;
+}
+
+/*highlight label*/
+.diigoHighlight .diigoHighlightLabel sup {
+	/*float:left;
+	margin-left:-10px;
+	text-align:right;
+	height:11px;
+	width:10px;
+	vertical-align:super;*/
+	font:normal normal normal 8px/8px "lucida grande",tahoma,verdana,arial,sans-serif;
+	text-decoration:none;
+	background-color:inherit;
+	cursor:default;
+}
+
+
+/*image highlight*/
+/*no inline comments*/
+img.diigoHighlight {
+	cursor: pointer;
+	outline:4px solid #FF9;
+}
+/*with private inline comments*/
+img.diigoHighlight.commented {
+	outline-color: #ABD5FF;
+}
+/*shared to group*/
+img.diigoHighlight.group.commented {
+	outline-color: #FFC4D8;
+}
+/*with public inline comments*/
+img.diigoHighlight.public.commented {
+	outline-color: #B2E57E;
+}
+/*float note*/
+div.diigoHighlight.type_2 {
+	position:absolute;
+	width:37px;
+	height:31px;
+	text-align:center;
+	background:transparent url('chrome://diigotb/skin/float_icon.png') no-repeat 50% 50%;
+	z-index:9996;
+}
+div.diigoHighlight.type_2 span {
+	position:relative;
+	color:#333;
+	font:normal 13px Verdana, Arial, Helvetica, sans-serif;
+	top: 4px;
+	cursor: default;
+}
+/*
+* html div.diigoHighlight.type_2{
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=scale, src="http://www.diigo.com/javascripts/webtoolbar/images/float_icon.png");
+	overflow:hidden;
+	background:none;
+}
+*/
+
+
+/*mouse over effect*/
+/*
+.diigoHighlight.id_190e5778b533dc0fa1b1660653a4f6f5 {outline: 2px dotted green !important;}
+*/
+
+
+
+/*Clip video*/
+div.diigoClipVideo{
+	float:left;
+	height:16px;
+	padding:0 16px 0 6px;
+	background:#f5f5f5 url(chrome://diigotb/skin/toolbar-clip-bg.gif) no-repeat right 0;
+	border:1px solid #ccc;
+	border-bottom-width:0;
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	z-index:999;
+	position:absolute;
+}
+
+div.diigoClipVideo.clipped {
+  background-position: right -32px; left: 717px; top: 135px;
+}
+
+	/*div.diigoClipVideo a{
+		font-weight:bold;
+		font-size:10px;
+		line-height:16px;
+		text-decoration:underline;
+		color:#03f;
+		margin-right:6px
+	}
+	div.diigoClipVideo a:hover,.diigolet .diigoClipVideo a:active{
+		color:#00f
+	}
+  */
+	div.diigoClipVideo span{
+		font-weight:bold;
+		font-size:10px;
+		line-height:16px;
+		text-decoration:underline;
+		color:#03f;
+		cursor:pointer;
+		margin-right:6px
+	}
+	div.diigoClipVideo span:hover,div.diigoClipVideo span:active{
+		color:#00f
+	}
+	/*.diigolet input{
+		font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+		font-size:9px;
+	}*/
+}
+
+@media print{
+em.diigoHighlight.a, em.diigoHighlight.b, em.diigoHighlight.c {
+	border-bottom:0.5pt dashed Black;
+}
+
+/*with private inline comments*/
+em.diigoHighlight.a.commented, em.diigoHighlight.b.commented, em.diigoHighlight.c.commented {
+	border-bottom-style:solid;
+}
+
+/*shared to group*/
+em.diigoHighlight.a.group.commented, em.diigoHighlight.b.group.commented, em.diigoHighlight.c.group.commented {
+	border-bottom-width:1pt;
+}
+
+/*with public inline comments*/
+em.diigoHighlight.a.public.commented, em.diigoHighlight.b.public.commented, em.diigoHighlight.c.public.commented {
+	border-bottom-width:1pt;
+}
+
+/*image highlight*/
+/*no inline comments*/
+img.diigoHighlight {
+	border:0.5pt dashed Black
+}
+/*with private inline comments*/
+img.diigoHighlight.commented {
+	border-style:solid;
+}
+/*shared to group*/
+img.diigoHighlight.group.commented {
+	border-width:1pt;
+}
+/*with public inline comments*/
+img.diigoHighlight.public.commented {
+	border-width:1pt;
+}
+/*float note*/
+div.diigoHighlight.type_2 {
+	display:none
+}
+div.diigoHighlight.type_2 span {
+	display:none
+}
+}</style><style id="diigo-activeHighlight" type="text/css">dummyRuleForDigg{}</style><style type="text/css" charset="utf-8">/* See license.txt for terms of usage */
+
+.firebugHighlight {
+    z-index: 2147483647;
+    position: absolute;
+    background-color: #3875d7;
+}
+
+.firebugLayoutBoxParent {
+    z-index: 2147483647;
+    position: absolute;
+    background-color: transparent;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px dashed #BBBBBB;
+}
+
+.firebugRulerH {
+    position: absolute;
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    background: url(chrome://firebug/skin/rulerH.png) repeat-x;
+    border-top: 1px solid #BBBBBB;
+    border-right: 1px dashed #BBBBBB;
+    border-bottom: 1px solid #000000;
+}
+
+.firebugRulerV {
+    position: absolute;
+    top: 0;
+    left: -15px;
+    width: 14px;
+    height: 100%;
+    background: url(chrome://firebug/skin/rulerV.png) repeat-y;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #000000;
+    border-bottom: 1px dashed #BBBBBB;
+}
+
+.overflowRulerX > .firebugRulerV {
+    left: 0;
+}
+
+.overflowRulerY > .firebugRulerH {
+    top: 0;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+.firebugLayoutBoxOffset {
+    z-index: 2147483647;
+    position: absolute;
+    opacity: 0.8;
+}
+
+.firebugLayoutBoxMargin {
+    background-color: #EDFF64;
+}
+
+.firebugLayoutBoxBorder {
+    background-color: #666666;
+}
+
+.firebugLayoutBoxPadding {
+    background-color: SlateBlue;
+}
+
+.firebugLayoutBoxContent {
+    background-color: SkyBlue;
+}
+
+/*.firebugHighlightGroup .firebugLayoutBox {
+    background-color: transparent;
+}
+
+.firebugHighlightBox {
+    background-color: Blue !important;
+}*/
+
+.firebugLayoutLine {
+    z-index: 2147483647;
+    background-color: #000000;
+    opacity: 0.4;
+}
+
+.firebugLayoutLineLeft,
+.firebugLayoutLineRight {
+    position: fixed;
+    width: 1px;
+    height: 100%;
+}
+
+.firebugLayoutLineTop,
+.firebugLayoutLineBottom {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+}
+
+.firebugLayoutLineTop {
+    margin-top: -1px;
+    border-top: 1px solid #999999;
+}
+
+.firebugLayoutLineRight {
+    border-right: 1px solid #999999;
+}
+
+.firebugLayoutLineBottom {
+    border-bottom: 1px solid #999999;
+}
+
+.firebugLayoutLineLeft {
+    margin-left: -1px;
+    border-left: 1px solid #999999;
+}
+</style></head><body>
+	<a name="top" id="top"></a>
+	<!-- HEADER -->
+	<a href="http://davidwalsh.name/"><img src="top-logo.gif" alt="David Walsh Blog" id="top-logo"></a>
+	<div id="header">
+		<div id="header1">
+			david walsh blog
+		</div>
+		<div id="header2">
+			Become a complete programmer with<br>PHP, CSS, MooTools, jQuery, and everything else.
+		</div>
+	</div>
+
+	<div id="wrap">
+		<!-- CONTENT AREA -->
+		<div id="content">
+			<div id="content-left">
+
+
+<div class="exhead">
+	<strong>Example Page for:</strong> <a href="">Using MooTools 1.2 For Drag, Drop, Sort, Save</a>
+</div>
+<div class="content">
+
+	<h1>Using MooTools 1.2 For Drag, Drop, Sort, Save Example Sofav</h1>
+
+		<p>Drag and drop the elements below.  The database gets updated on every drop.</p>
+
+	<div id="message-box"> Waiting for sortation submission...</div>
+
+	<form id="dd-form" action="/dw-content/sort-save.php" method="post">
+	<p><input value="1" name="auto_submit" id="auto_submit" type="checkbox"> <label for="auto_submit">Automatically submit on drop event</label></p>
+
+	<ul id="sortable-list">
+		<li style="background: rgb(221, 221, 221) none repeat scroll 0% 0%; visibility: visible; opacity: 1; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="sortme" alt="1">Article 1</li><li class="sortme" alt="6">Article 6</li><li class="sortme" alt="2">Article 2</li><li class="sortme" alt="4">Article 4</li><li class="sortme" alt="5">Article 5</li><li class="sortme" alt="3">Article 3</li>	</ul>
+	<br>
+	<input name="sort_order" id="sort_order" value="1|6|2|4|5|3|" type="hidden">
+	<input name="do_submit" value="Submit Sortation" class="button" type="submit">
+	</form>
+
+</div>
+
+<div class="exhead" style="margin: 20px 0pt 0pt;">
+	<strong>&lt;&lt; Back to:</strong> <a href="">Using MooTools 1.2 For Drag, Drop, Sort, Save</a>
+</div>
+
+</div></div></div>
+
+</body></html>
