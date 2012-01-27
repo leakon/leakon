@@ -1,0 +1,10 @@
+2012-01-27
+
+【功能列表】
+* 根据配置文件的 serverName，生成 shell 命令
+* 判断是否为唯一 rsync 进程，如果有正在执行的进程，则不执行任何操作
+* 确认没有重复进程之后，执行 rsync 命令同步文件，并输出进度信息到 logs 目录
+* php 的程序只输出 shell 命令，确认无误后用管道输出给 bash 来运行
+
+【使用方法】
+[backup@backup-server rsync]$ /usr/bin/php /home/backup/script/rsync/rsync_web.php server-1 | sh
